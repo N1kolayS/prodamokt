@@ -1,0 +1,154 @@
+html,
+body {
+    height: 100%;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 90px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+.navbar-top {
+    height: 75px;
+    background: #f2f2f2;
+
+}
+.navbar-brand {
+    height: 70px;
+    padding-top: 5px;
+    padding-bottom: 0;
+
+}
+
+.navbar-nav > li > a {
+    font-family: 'Play', sans-serif;
+    font-size: 18px;
+    padding-top: 26px;
+    padding-bottom: 28px;
+    color: #4d4d4d;
+}
+.navbar-nav > li > a:focus,
+.navbar-nav > li > a:hover {
+    background-color: #b4b4b4;
+}
+
+.navbar-nav > li > a.nav-premises:focus,
+.navbar-nav > li > a.nav-premises:hover {
+    background-color: #fffda7;
+}
+
+.navbar-nav > li > a.nav-auto:focus,
+.navbar-nav > li > a.nav-auto:hover {
+    background-color: #ffbe93;
+}
+
+.navbar-nav > li > a.nav-jobs:focus,
+.navbar-nav > li > a.nav-jobs:hover {
+    background-color: #89e787;
+}
+
+.navbar-nav > li > a.nav-stuff:focus,
+.navbar-nav > li > a.nav-stuff:hover {
+    background-color: #a4d5ff;
+}
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding: 15px;
+    border: none;
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 15px;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+
+.main-pin-text {
+    font-family: 'Play', sans-serif;
+    font-size: 40px;
+    color: #4d4d4d;
+}
+
+.pin-premises {
+    width: 300px;
+    height: 400px;
+}
+.pin-premises p {
+    font-family: 'Play', sans-serif;
+    font-size: 20px;
+    color: #4d4d4d;
+    margin-bottom: 5px;
+    text-align: justify;
+}
+.pin-auto {
+    width: 300px;
+    height: 400px;
+}
+.pin-auto p {
+    font-family: 'Play', sans-serif;
+    font-size: 20px;
+    color: #4d4d4d;
+    margin-bottom: 5px;
+    text-align: justify;
+}
+.pin-jobs {
+    width: 300px;
+    height: 400px;
+}
+.pin-things {
+    width: 300px;
+    height: 400px;
+}
+
+/* Upload */
+.kv-file-upload {
+    display: none;
+}
+.file-upload-indicator
+{
+    display: none;
+}
