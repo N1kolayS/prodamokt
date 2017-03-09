@@ -36,7 +36,7 @@ class BoardController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-
+                'only' => ['step' ,'create'],
                 'rules' => [
 
                     [
@@ -44,11 +44,7 @@ class BoardController extends Controller
                         'allow' => true,
                         'roles' => ['user'],
                     ],
-                    [
-                        'actions' => ['view', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+
                 ],
             ],
             'verbs' => [
@@ -68,17 +64,30 @@ class BoardController extends Controller
         $model = new Search();
 
         //$model->setAttributes(Yii::$app->request->getQueryParam('Search'), false);
-     //   $model->validate();
+        //   $model->validate();
         //Yii::$app->view->params['searchform'] = $model;
-       // echo var_dump(Yii::$app->request->getQueryParam('Search'));
-        $models = $model->search(Yii::$app->request->getQueryParam('Search'));
+        //echo '<br><br><br><br><br><br><pre>';
+        //  echo var_dump(Yii::$app->request->getQueryParam('Search'));
+        $dataProvider = $model->search(Yii::$app->request->getQueryParam('Search'));
+        //echo var_dump($model);
 
+
+        //echo '</pre>';
 
         return $this->render('index', [
             'model' => $model,
-            'models' => $models,
 
-            //'dataProvider' => $dataProvider,
+
+            'dataProvider' => $dataProvider,
+        ]);
+
+    }
+
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+        return $this->render('view', [
+            'model' => $model,
         ]);
 
     }

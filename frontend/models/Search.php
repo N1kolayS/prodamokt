@@ -25,17 +25,15 @@ use yii\helpers\ArrayHelper;
 
 class Search extends Board
 {
-    public $town;
-    public $type;
-    public $user;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
-            [['name', 'body', 'town', 'type', 'user'], 'safe'],
+            [['id',  'type_id', 'town_id', 'views', 'looks', 'enable', 'marked'], 'integer'],
+            [['name'], 'safe'],
             [['cost'], 'number'],
         ];
     }
@@ -59,27 +57,13 @@ class Search extends Board
     public function search($params)
     {
         $query = Board::find();
-        $query->joinWith(['town', 'type', 'user']);
-
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['town'] = [
-            'asc' => [Town::tableName().'.name' => SORT_ASC],
-            'desc' => [Town::tableName().'.name' => SORT_DESC],
-        ];
-
-        $dataProvider->sort->attributes['type'] = [
-            'asc' => [Type::tableName().'.name' => SORT_ASC],
-            'desc' => [Type::tableName().'.name' => SORT_DESC],
-        ];
-
-
-
-        $this->load($params);
+         $this->setAttributes($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -89,23 +73,28 @@ class Search extends Board
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'user_id' => $this->user_id,
             'type_id' => $this->type_id,
             'town_id' => $this->town_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'cost' => $this->cost,
-            'views' => $this->views,
-            'looks' => $this->looks,
             'enable' => $this->enable,
             'marked' => $this->marked,
         ]);
 
-        $query->andFilterWhere(['like', Board::tableName().'.name', $this->name])
-            ->andFilterWhere(['like', Town::tableName().'.name', $this->town])
+        $query->andFilterWhere(['like', Board::tableName().'.name', $this->name]);
 
-            ->andFilterWhere(['like', Type::tableName().'.name', $this->type]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+
+                ]
+            ],
+        ]);
 
         return $dataProvider;
     }

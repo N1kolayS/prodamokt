@@ -28,15 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'password')->passwordInput()->label() ?>
 
 
-            <div class="panel panel-body">
-                <p class="text-muted">Если вы забыли пароль, то Вы можете его  <?= Html::a('сбросить здесь', ['site/request-password-reset']) ?>.</p>
-            </div>
 
             <div class="form-group">
                 <?= Html::submitButton('Войти', ['class' => 'btn btn-primary btn-lg', 'name' => 'login-button']) ?>
             </div>
 
+
+            <div class="panel panel-body">
+           <!--     <p class="text-muted">Если вы забыли пароль, то Вы можете его  <?= Html::a('сбросить здесь', ['site/request-password-reset']) ?>.</p> -->
+            </div>
             <?php ActiveForm::end(); ?>
+            <h3>Впервые на нашем сайте? <?=Html::a('Зарегистрируйтесь', ['site/signup'] )?>  Регистрация займет не более одной минуты</h3>
         </div>
         <div class="col-md-6">
 

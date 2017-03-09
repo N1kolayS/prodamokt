@@ -83,6 +83,15 @@ body {
 .navbar-nav > li > a.nav-stuff:hover {
     background-color: #a4d5ff;
 }
+
+.navbar-nav > li > a.nav-add {
+    color: #e7194d;
+}
+.navbar-nav > li > a.nav-add:focus,
+.navbar-nav > li > a.nav-add:hover {
+    color: #ffffff;
+    background-color: #e77173;
+}
 /* align the logout "link" (button in form) of the navbar */
 .nav li > form > button.logout {
     padding: 15px;
@@ -151,4 +160,9 @@ body {
 .file-upload-indicator
 {
     display: none;
+}
+
+/* Search */
+.main-search .main-search-input {
+    width: 420px;
 }

@@ -56,16 +56,16 @@ $this->registerJs($script, yii\web\View::POS_HEAD);
         'class' => 'form-inline main-search'
     ]
 ]); ?>
-    <div class="panel panel-info">
+    <div class="panel panel-warning">
         <div class="panel-heading">
-            <h2 class="panel-title text-center">Поиск Недвижимости</h2>
+            <h2 class="panel-title text-center">Поиск Объявлений</h2>
         </div>
         <div class="panel-body">
 
-            <?= $form->field($model, 'id_type')->dropDownList(\common\models\Type::AllTypes(), ['prompt' => '- Тип Объявления -',  'onchange'=>'loadProp($(this).val())'])->label(false) ?>
+            <?= $form->field($model, 'type_id')->dropDownList(\common\models\Type::AllTypes(), ['prompt' => '- Тип Объявления -',  'onchange'=>'loadProp($(this).val())'])->label(false) ?>
 
-            <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...'])->label(false) ?>
-            <?= $form->field($model, 'id_town')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false) ?>
+            <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...',  'class' => 'form-control main-search-input' ])->label(false) ?>
+            <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false) ?>
 
             <div class="form-group">
                 <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary', ]) ?>

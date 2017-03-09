@@ -8,12 +8,14 @@
 
 namespace app\components;
 
+use common\models\Board;
+use frontend\models\Search;
 use yii\base\Widget;
 
 
 class SearchWidget extends Widget {
 
-    public $search;
+    public $model;
 
 
 
@@ -22,21 +24,20 @@ class SearchWidget extends Widget {
         parent::init();
 
 
-        if ($this->search === null)
+        if ($this->model === null)
         {
-            $this->search = false;
+            $this->model = new Search();
         }
 
 
     }
 
     public function run() {
-        if (($this->search))
-        {
+
 
             return $this->render('search',
-                ['model' => $this->search]
+                ['model' => $this->model]
             );
-        }
+
     }
 }

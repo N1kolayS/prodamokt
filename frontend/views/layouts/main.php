@@ -36,22 +36,22 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Подать объявление', 'url' => ['/board/step'], 'linkOptions' => ['class' => 'nav-premises']  ],
+        ['label' => 'Подать объявление', 'url' => ['/board/step'], 'linkOptions' => ['class' => 'nav-add']  ],
         ['label' => 'Недвижимость', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-premises']  ],
         ['label' => 'Автомобили', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-auto']  ],
         ['label' => 'Работа', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-jobs'] ],
-        ['label' => 'Техника', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
+        ['label' => 'Электроника', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
 
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
+        //$menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
 
         $menuItems[] = ['label' => '<span class="glyphicon glyphicon-user"></span> '.Yii::$app->user->identity->username,  'items' =>
             [
                 ['label' => 'Мой кабинет ', 'url' => ['/user/cabinet']],
-                ['label' => 'Мои объявления', 'url' => ['/user/my']],
+//                ['label' => 'Мои объявления', 'url' => ['/user/my']],
                 ['label' => 'Выйти ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']]
             ]
 

@@ -10,30 +10,28 @@ use yii\bootstrap\Html;
 
 
     <div class="row">
-        <div class="col-md-2">
-
-        </div>
+        
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6 ">
                     <div class="pin-premises pull-right">
                         <a href="#">
-                            <img src="/images/pin-premises.png" height="250" width="auto"  >
+                            <img src="/images/pin-premises.png" height="200" width="auto"  >
                         </a>
                         <h1 class="main-pin-text">Недвижимость</h1>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp;Квартиры &nbsp;&nbsp;&nbsp;&nbsp;Дома &nbsp;&nbsp;&nbsp;&nbsp;Участки </p>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp;Коммерческая &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Гаражи </p>
+                        <p class="text-justify">&nbsp;&nbsp;&nbsp;<?=Html::a('Квартиры', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Дома', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Участки', ['board/index'])?> </p>
+                        <p class="text-justify">&nbsp;&nbsp;&nbsp; <?=Html::a('Коммерческая', ['board/index'])?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Гаражи', ['board/index'])?> </p>
                     </div>
 
                 </div>
                 <div class="col-md-6 text-center">
                     <div class="pin-auto">
                         <a href="#">
-                            <img src="/images/pin-auto.png"  height="250" width="auto" >
+                            <img src="/images/pin-auto.png"  height="200" width="auto" >
                         </a>
                         <h1 class="main-pin-text">Автомобили</h1>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp;Легковые&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Мототехника </p>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp;Коммерческие&nbsp;&nbsp;&nbsp; Грузовые </p>
+                        <p class="text-justify">&nbsp;&nbsp;&nbsp; <?=Html::a('Легковые', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Мототехника', ['board/index'])?>  </p>
+                        <p class="text-justify">&nbsp;&nbsp;&nbsp; <?=Html::a('Коммерческие', ['board/index'])?> &nbsp;&nbsp;&nbsp; <?=Html::a('Грузовые', ['board/index'])?>  </p>
                     </div>
 
                 </div>
@@ -41,7 +39,7 @@ use yii\bootstrap\Html;
                 <div class="col-md-6 ">
                     <div class="pin-jobs pull-right">
                         <a href="#">
-                            <img src="/images/pin-jobs.png" height="250" width="auto"  >
+                            <img src="/images/pin-jobs.png" height="200" width="auto"  >
                         </a>
                         <h1 class="main-pin-text">Работа</h1>
                     </div>
@@ -50,16 +48,16 @@ use yii\bootstrap\Html;
                 <div class="col-md-6">
                     <div class="pin-things">
                         <a href="#">
-                            <img src="/images/pin-things.png" height="250" width="auto"  >
+                            <img src="/images/pin-things.png" height="200" width="auto"  >
                         </a>
-                        <h1 class="main-pin-text">Техника, вещи</h1>
+                        <h1 class="main-pin-text">Электроника</h1>
                     </div>
 
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-
+        <div class="col-md-4">
+            <img src="http://fakeimg.pl/350x700/?text=Reklama&font=lobster">
         </div>
 
 

@@ -101,18 +101,6 @@ class BoardSearch extends Board
             ->andFilterWhere(['like', User::tableName().'.username', $this->user])
             ->andFilterWhere(['like', Type::tableName().'.name', $this->type]);
 
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_ASC,
-                ]
-            ],
-        ]);
         return $dataProvider;
     }
 
