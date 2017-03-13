@@ -65,7 +65,9 @@ $this->registerJs($script, yii\web\View::POS_HEAD);
             <?= $form->field($model, 'type_id')->dropDownList(\common\models\Type::AllTypes(), ['prompt' => '- Тип Объявления -',  'onchange'=>'loadProp($(this).val())'])->label(false) ?>
 
             <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...',  'class' => 'form-control main-search-input' ])->label(false) ?>
-            <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false) ?>
+            <?php
+             // echo $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false);
+             ?>
 
             <div class="form-group">
                 <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary', ]) ?>

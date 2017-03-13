@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 use common\models\Board;
 use common\models\Property;
+use common\models\Town;
 use common\models\Type;
 use common\models\User;
 use frontend\models\Search;
@@ -121,6 +122,7 @@ class BoardController extends Controller
 
         $model = new Board();
         $model->type_id = $type_id;
+        $model->town_id  = Town::findOne(['default' => Town::DEFAULT_YES]);
 
         $property_list = Property::find()->where(['type_id'=> $type_id])->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

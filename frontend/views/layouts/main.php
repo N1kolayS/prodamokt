@@ -41,6 +41,7 @@ AppAsset::register($this);
         ['label' => 'Автомобили', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-auto']  ],
         ['label' => 'Работа', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-jobs'] ],
         ['label' => 'Электроника', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
+        ['label' => 'Услуги', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
 
     ];
     if (Yii::$app->user->isGuest) {

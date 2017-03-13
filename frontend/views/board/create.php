@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'type_id')->hiddenInput() ?>
+    <?= $form->field($model, 'type_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'town_id')->hiddenInput()->label(false) ?>
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -40,7 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'cost')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -']) ?>
+            <?php
+            //$form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -'])
+            ?>
         </div>
         <div class="col-md-6">
             <?php
