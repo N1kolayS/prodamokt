@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $town_id
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $finished_at
  * @property string $name
  * @property string $body
  * @property string $cost
@@ -67,7 +68,7 @@ class Board extends \yii\db\ActiveRecord
     {
         return [
             [[ 'type_id', 'town_id',  'name', 'body'], 'required'],
-            [['user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
+            [['user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'finished_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
             [['body'], 'string'],
             [['cost'], 'number'],
             [['name'], 'string', 'max' => 100],
@@ -94,6 +95,7 @@ class Board extends \yii\db\ActiveRecord
             'town' => 'Город',
             'created_at' => 'Создано',
             'updated_at' => 'Изменено',
+            'finished_at' => 'Срок до',
             'name' => 'Заголовок',
             'body' => 'Текст',
             'cost' => 'Стоимость',
@@ -145,6 +147,18 @@ class Board extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        if (($this->finished_at <= time())&&$this->enable)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Превращение цены в INT
      * @todo Сделать по нормальному
      * Установка времени старта и финиша
@@ -154,17 +168,19 @@ class Board extends \yii\db\ActiveRecord
      */
     public function beforeSave($insert)
     {
-        parent::beforeSave($insert);
-        if ($this->cost)
-            $this->cost = intval(str_replace(' ', '', $this->cost));
+        if (parent::beforeSave($insert))
+        {
+            if ($this->cost)
+                $this->cost = intval(str_replace(' ', '', $this->cost));
 
-        if ($this->isNewRecord) {
-
-
-            $this->user_id = Yii::$app->user->id;
-
+            if ($this->isNewRecord) {
+                $this->user_id = Yii::$app->user->id;
+                $this->finished_at = $this->created_at + 3600*24*30;
+            }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     /**
@@ -174,26 +190,41 @@ class Board extends \yii\db\ActiveRecord
      */
     public function afterSave ($insert, $changedAttributes)
     {
-        parent::afterSave($insert, $changedAttributes);
-
-        if ((!$insert)and($this->property)) // Check update record and Property exist
+        if (parent::afterSave($insert, $changedAttributes))
         {
-            // Удаляем старые свойства
-            Property::deleteAll(['board_id' => $this->id]);
-        }
-
-        if ($this->property)
-        {
-            // Save
-            foreach ($this->property as $key=>$prop)
+            if ((!$insert)and($this->property)) // Check update record and Property exist
             {
-                $model_prop = new BoardProperty();
-                $model_prop->board_id = $this->id;
-                $model_prop->property_id = $key;
-                $model_prop->value = $prop;
-                $model_prop->save();
+                // Удаляем все значения свойств
+                BoardProperty::deleteAll(['board_id' => $this->id]);
+            }
+
+            if ($this->property)
+            {
+                // Save
+                foreach ($this->property as $key=>$prop)
+                {
+                    $model_prop = new BoardProperty();
+                    $model_prop->board_id = $this->id;
+                    $model_prop->property_id = $key;
+                    $model_prop->value = $prop;
+                    $model_prop->save();
+                }
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete())
+        {
+            BoardProperty::deleteAll(['board_id' => $this->id]);
+            $this->removeImages();
+            return true;
+        }
+        return false;
     }
 
 }

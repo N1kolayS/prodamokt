@@ -19,6 +19,8 @@ use yii\helpers\Json;
  * @property BoardProperty[] $boardProperties
  * @property Board[] $boards
  * @property Type $type
+ *
+ * @property Object $generateMode
  */
 class Property extends \yii\db\ActiveRecord
 {
@@ -31,6 +33,7 @@ class Property extends \yii\db\ActiveRecord
     const MODE_LIST     = 2; // Список
     const MODE_MULTI    = 3; // Мультивыбор
     const MODE_RELATION = 4; // Связь с моделью
+
 
 
     /**
@@ -109,94 +112,27 @@ class Property extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return string
-     */
-    private function modeList()
-    {
-
-        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
-        foreach (explode(';', $this->value) as $value)
-        {
-            if (trim($value)=='0')
-            {
-                $input = $input. '<option value="">- Выберите: '. $this->name .' -</option>';
-            }
-            else
-            {
-                $input = $input. '<option value = "'. trim($value) .'">'. trim($value) .'</option>';
-            }
-        }
-        return $input. '</select>';
-
-    }
-
-    /**
-     * @return string
-     */
-    private function modeMulti()
-    {
-
-        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
-        foreach (explode(';', $this->value) as $value)
-        {
-            if (trim($value)=='0')
-            {
-                $input = $input. '<option value="">- Выберите: '. $this->name .' -</option>';
-            }
-            else
-            {
-                $input = $input. '<option value = "'. trim($value) .'">'. trim($value) .'</option>';
-            }
-
-        }
-        return $input. '</select>';
-
-    }
-
-    /**
-     * @return string
-     */
-    private function modeRange()
-    {
-
-        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
-
-        $data = Json::decode($this->value);
-        //return var_dump($data);
-        #/*
-        $step = $data['start'];
-        for ($i = $data['start']; $i<$data['stop']+1; $i++)
-        {
-            $input = $input. '<option >'. $step .'</option>';
-            $step+= $data['step'];
-        }
-        return $input. '</select>';
-#*/
-    }
-
-
-    /**
      *
      * @return null|string
      */
-    public function generateCreate()
+    public function getGenerateMode()
     {
         switch ($this->mode) {
             case self::MODE_VALUE:
-                $result = '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
+                $modeObject = new ModeValue($this->id, $this->name, $this->value);
                 break;
             case self::MODE_RANGE:
-                $result = $this->modeRange();
+                $modeObject = new ModeRange($this->id, $this->name, $this->value);
                 break;
             case self::MODE_LIST:
-                $result = $this->modeList();
+                $modeObject = new ModeList($this->id, $this->name, $this->value);
                 break;
             case self::MODE_MULTI:
-                $result = $this->modeMulti();
+                $modeObject = new ModeMulti($this->id, $this->name, $this->value);
                 break;
             default:
-                $result = '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
+                $modeObject = new ModeValue($this->id, $this->name, $this->value);
         }
-        return $result;
+        return $modeObject;
     }
 }

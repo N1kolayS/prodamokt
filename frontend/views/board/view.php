@@ -42,7 +42,21 @@ $this->params['breadcrumbs'][] = $this->title;
             <hr />
             <p><?=nl2br(Html::encode($model->body))?></p>
             <table class="table table-striped table-condensed">
+                <?php
+                foreach ($model->boardProperties as $property)
+                {
+                    if (!empty($property->value))
+                    {
+                        ?>
+                        <tr>
+                            <td><?=$property->property->name?></td>
+                            <td><?=$property->value?></td>
+                        </tr>
+                        <?php
+                    }
 
+                }
+                ?>
             </table>
         </div>
     </div>

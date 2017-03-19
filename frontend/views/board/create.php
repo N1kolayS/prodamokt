@@ -39,7 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
 
-            <?= $form->field($model, 'cost')->textInput(['maxlength' => true]) ?>
+            <?php
+            if ($model->type->cost_name)
+            {
+                echo $form->field($model, 'cost')->textInput(['maxlength' => true])->label($model->type->cost_name);
+            }
+            ?>
 
             <?php
             //$form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -'])
@@ -54,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
                 <div class="form-group">
                     <label class="control-label" for="property-<?= $property->id ?>"><?= $property->name ?></label>
-                    <?= $property->generateCreate() ?>
+                    <?= $property->generateMode->create() ?>
                 </div>
             <?php
                 # */
@@ -74,14 +79,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'multiple'=>true
                 ],
                 'pluginOptions' => [
-
-
                     'showPreview' => true,
                     'showCaption' => true,
                     'showRemove' => true,
                     'showUpload' => false,
-
-
                     'maxFileCount' => 5
                 ]
             ])->label(false);

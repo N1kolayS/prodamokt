@@ -39,6 +39,7 @@ AppAsset::register($this);
         ['label' => 'Объявления', 'url' => ['/board/index']],
         ['label' => 'Пользователи', 'url' => ['/user/index']],
         ['label' => 'Настройки', 'url' => '#' , 'items' =>[
+            ['label' => 'Есть сомнения? Не трогай!'],
             ['label' => 'Виды объявлений', 'url' => ['/type/index']],
             ['label' => 'Свойства', 'url' => ['/property/index']],
             ['label' => 'Автомобили'],

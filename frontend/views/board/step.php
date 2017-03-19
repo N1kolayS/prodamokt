@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h2><?=$list_category[Type::CATEGORY_PLACE]?></h2>
                 <div  class="list-group">
                 <?php
-
                 foreach ($list_types as $type)
                 {
                     if ($type->common_id == Type::CATEGORY_PLACE)
@@ -35,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo Html::a($type->name, ['board/create', 'id' => $type->id], ['class' => 'list-group-item']);
                     }
                 }
-
                 ?>
                 </div>
 
@@ -62,6 +60,45 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-4">
             <div>
+                <h2><?=$list_category[Type::CATEGORY_SERVICE]?></h2>
+                <div  class="list-group">
+                    <?php
+
+                    foreach ($list_types as $type)
+                    {
+                        if ($type->common_id == Type::CATEGORY_SERVICE)
+                        {
+                            echo Html::a($type->name, ['board/create', 'id' => $type->id], ['class' => 'list-group-item']);
+                        }
+                    }
+
+                    ?>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <h2><?=$list_category[Type::CATEGORY_JOB]?></h2>
+                <div  class="list-group">
+                    <?php
+
+                    foreach ($list_types as $type)
+                    {
+                        if ($type->common_id == Type::CATEGORY_JOB)
+                        {
+                            echo Html::a($type->name, ['board/create', 'id' => $type->id], ['class' => 'list-group-item']);
+                        }
+                    }
+
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div>
                 <h2><?=$list_category[Type::CATEGORY_ELECT]?></h2>
                 <div  class="list-group">
                     <?php
@@ -76,9 +113,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     ?>
                 </div>
-
             </div>
         </div>
+        <div class="col-md-4">
+            <div>
+                <h2><?=$list_category[Type::CATEGORY_STUFF]?></h2>
+                <div  class="list-group">
+                    <?php
+
+                    foreach ($list_types as $type)
+                    {
+                        if ($type->common_id == Type::CATEGORY_STUFF)
+                        {
+                            echo Html::a($type->name, ['board/create', 'id' => $type->id], ['class' => 'list-group-item']);
+                        }
+                    }
+
+                    ?>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 

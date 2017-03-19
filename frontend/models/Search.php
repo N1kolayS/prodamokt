@@ -25,6 +25,7 @@ use yii\helpers\ArrayHelper;
 
 class Search extends Board
 {
+    public $common_id;
 
     /**
      * @inheritdoc
@@ -32,7 +33,7 @@ class Search extends Board
     public function rules()
     {
         return [
-            [['id',  'type_id', 'town_id', 'views', 'looks', 'enable', 'marked'], 'integer'],
+            [['id',  'type_id', 'town_id', 'common_id', 'views', 'looks', 'enable', 'marked'], 'integer'],
             [['name'], 'safe'],
             [['cost'], 'number'],
         ];
@@ -56,29 +57,27 @@ class Search extends Board
      */
     public function search($params)
     {
-        $query = Board::find();
-        // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $this->setAttributes($params);
 
-         $this->setAttributes($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+        if ($this->common_id)
+        {
+            $types = Type::find()->where(['common_id'=>$this->common_id])->asArray()->all();
+            //echo var_dump(ArrayHelper::getColumn($types, 'id'));
+            $query = Board::find()->where(['type_id' => ArrayHelper::getColumn($types, 'id')]);
         }
+        else
+        {
+            $query = Board::find();
+        }
+
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'user_id' => $this->user_id,
             'type_id' => $this->type_id,
             'town_id' => $this->town_id,
             'cost' => $this->cost,
-            'enable' => $this->enable,
-            'marked' => $this->marked,
+
         ]);
 
         $query->andFilterWhere(['like', Board::tableName().'.name', $this->name]);

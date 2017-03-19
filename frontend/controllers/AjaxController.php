@@ -23,21 +23,17 @@ class AjaxController extends Controller {
     /*
      * JSON array of property Ads
      */
-    public function actionGetpropeties()
+    public function actionGetProperties($id)
     {
         if (Yii::$app->request->isAjax) {
-            $id_obj = Yii::$app->getRequest()->getQueryParam('id_object');
-            $id_type = Yii::$app->getRequest()->getQueryParam('id_type');
-            $propeties = Property::findAll(['id_object' => $id_obj, 'id_type' => $id_type]);
-            $result = [];
-            foreach ($propeties as $prop)
-            {
-                if ($prop->val)
-                    $arr = explode(',', $prop->val);
-                else
-                    $arr = false;
 
-                $result[] = array('id' => $prop['id'], 'name' => $prop['name'], 'val' => $arr);
+            $properties =  Property::find()->where(['type_id' => $id])->all();
+
+            $result = [];
+
+            foreach ($properties as $property)
+            {
+                $result[] = array('id' => $property->id, 'mode' => $property->mode, 'val' => $property->generateMode->search());
             }
             echo Json::encode($result);
         }

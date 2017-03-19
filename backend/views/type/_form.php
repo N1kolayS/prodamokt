@@ -13,6 +13,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'cost_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'sort')->textInput() ?>
 

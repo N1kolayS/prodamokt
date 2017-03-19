@@ -1,6 +1,8 @@
 <?php
 
 use yii\bootstrap\Html;
+use yii\helpers\Url;
+use common\models\Type;
 
 /* @var $this yii\web\View */
 
@@ -11,59 +13,135 @@ use yii\bootstrap\Html;
 
     <div class="row">
         
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="row">
-                <div class="col-md-6 ">
-                    <div class="pin-premises pull-right">
-                        <a href="#">
-                            <img src="/images/pin-premises.png" height="180" width="auto"  >
+                <div class="col-md-4 ">
+                    <div class="main-pin  text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_PLACE  ]) ?>">
+                            <img src="/images/pin-premises.png" height="150" width="auto"  >
                         </a>
                         <h1 class="main-pin-text">Недвижимость</h1>
-                        <p class="text-justify"><?=Html::a('Квартиры', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Дома', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Участки', ['board/index'])?> </p>
-                        <p class="text-justify"><?=Html::a('Коммерческая', ['board/index'])?>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Гаражи', ['board/index'])?> </p>
-                    </div>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_PLACE)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
 
+                    </div>
                 </div>
-                <div class="col-md-6 text-center">
-                    <div class="pin-auto">
-                        <a href="#">
-                            <img src="/images/pin-auto.png"  height="180" width="auto" >
+                <div class="col-md-4">
+                    <div class="main-pin  text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_AUTO ]) ?>">
+                            <img src="/images/pin-auto.png"  height="150" width="auto" >
                         </a>
                         <h1 class="main-pin-text">Автомобили</h1>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp; <?=Html::a('Легковые', ['board/index'])?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?=Html::a('Мототехника', ['board/index'])?>  </p>
-                        <p class="text-justify">&nbsp;&nbsp;&nbsp; <?=Html::a('Коммерческие', ['board/index'])?> &nbsp;&nbsp;&nbsp; <?=Html::a('Грузовые', ['board/index'])?>  </p>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_AUTO)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
                     </div>
-
                 </div>
-
-                <div class="col-md-6 ">
-                    <div class="pin-jobs pull-right">
-                        <a href="#">
-                            <img src="/images/pin-jobs.png" height="180" width="auto"  >
+                <div class="col-md-4">
+                    <div class="main-pin  text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_SERVICE  ]) ?>">
+                            <img src="/images/pin-service.png"  height="150" width="auto" >
                         </a>
-                        <h1 class="main-pin-text">Работа, Услуги</h1>
-                        <p class="text-justify"> <?=Html::a('Вакансии', ['board/index'])?>&nbsp;&nbsp;   <?=Html::a('Резюме', ['board/index'])?>&nbsp;&nbsp;     <?=Html::a('Услуги', ['board/index'])?> </p>
+                        <h1 class="main-pin-text">Услуги</h1>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_SERVICE)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
                     </div>
-
                 </div>
-                <div class="col-md-6">
-                    <div class="pin-things">
-                        <a href="#">
-                            <img src="/images/pin-things.png" height="180" width="auto"  >
+
+                <div class="col-md-4 ">
+                    <div class="main-pin text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_JOB  ]) ?>">
+                            <img src="/images/pin-jobs.png" height="150" width="auto"  >
+                        </a>
+                        <h1 class="main-pin-text">Работа</h1>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_JOB)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="main-pin text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_ELECT  ]) ?>">
+                            <img src="/images/pin-elect.png" height="150" width="auto"  >
                         </a>
                         <h1 class="main-pin-text">Электроника</h1>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_ELECT)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
                     </div>
-
+                </div>
+                <div class="col-md-4">
+                    <div class="main-pin text-center">
+                        <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_STUFF  ]) ?>">
+                            <img src="/images/pin-things.png" height="150" width="auto"  >
+                        </a>
+                        <h1 class="main-pin-text">Личные вещи</h1>
+                        <div class="main-pin-list text-justify">
+                            <?php
+                            foreach ($list_types as $type)
+                            {
+                                if ($type->common_id == Type::CATEGORY_STUFF)
+                                {
+                                    echo Html::a($type->name, ['board/index', 'Search[type_id]' => $type->id]). ' ';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <img src="http://fakeimg.pl/350x700/?text=Reklama&font=lobster">
+        <div class="col-md-3">
+            <img src="http://fakeimg.pl/240x400/?text=Reklama&font=lobster">
         </div>
 
 
 
     </div>
+
 
 
 </div>

@@ -24,6 +24,7 @@ class m170301_104550_create_board_table extends Migration
             'town_id' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+            'finished_at' => $this->integer()->notNull(),
             'name' => $this->string(100)->notNull(),
             'body' => $this->text(),
             'cost' => $this->decimal(10,2)->defaultValue(0),

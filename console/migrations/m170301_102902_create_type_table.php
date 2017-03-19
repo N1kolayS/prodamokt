@@ -15,6 +15,7 @@ class m170301_102902_create_type_table extends Migration
         $this->createTable('type', [
             'id' => $this->primaryKey(),
             'name' => $this->string(50)->notNull(),
+            'cost_name' => $this->string(50)->Null(),
             'sort' => $this->integer()->defaultValue(0),
             'common_id' => $this->integer()->notNull(),
         ]);

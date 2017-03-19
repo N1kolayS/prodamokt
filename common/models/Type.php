@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property integer $id
  * @property string $name
+ * @property string $cost_name
  * @property integer $sort
  * @property integer $common_id
  *
@@ -26,6 +27,7 @@ class Type extends \yii\db\ActiveRecord
     const CATEGORY_ELECT   = 3;
     const CATEGORY_JOB     = 4;
     const CATEGORY_SERVICE = 5;
+    const CATEGORY_STUFF   = 6;
 
     /**
      * @inheritdoc
@@ -43,7 +45,7 @@ class Type extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['sort', 'common_id'], 'integer'],
-            [['name'], 'string', 'max' => 50],
+            [['name', 'cost_name'], 'string', 'max' => 50],
         ];
     }
 
@@ -55,6 +57,7 @@ class Type extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Наименование',
+            'cost_name' => 'Стоимость',
             'sort' => 'Сортировка',
             'common_id' => 'Раздел',
         ];
@@ -84,6 +87,7 @@ class Type extends \yii\db\ActiveRecord
             self::CATEGORY_ELECT   => 'Электроника',
             self::CATEGORY_JOB     => 'Работа',
             self::CATEGORY_SERVICE => 'Услуги',
+            self::CATEGORY_STUFF   => 'Вещи',
 
         ];
         return $data;
@@ -106,5 +110,64 @@ class Type extends \yii\db\ActiveRecord
     {
         $data = Type::find()->all();
         return ArrayHelper::map($data,'id','name');
+    }
+
+    /**
+     * List all Types
+     * @return array
+     */
+    public static function AllTypeSearch($css=false)
+    {
+        $data = Type::find()->all();
+        $common = self::ListCategory();
+        $allarr = [];
+
+        // Name
+        foreach ($common as $key => $value) {
+            $allarr['common-' . $key] = $value;
+
+            foreach ($data as $val) {
+                if ($val->common_id == $key) {
+                    $allarr[$val->id] = $val->name;
+                }
+            }
+        }
+
+        //CSS Options
+        if ($css)
+        {
+            $allarr = [];
+            foreach ($common as $key => $value) {
+                $allarr['common-' . $key] = ['class' => 'opt'];
+
+                foreach ($data as $val) {
+                    if ($val->common_id == $key) {
+                        $allarr[$val->id] = ['class' => 'basic'];
+                    }
+                }
+            }
+
+        }
+
+        return $allarr;
+
+        //$types = ArrayHelper::map($data,'id','name');
+        /*
+        $common = self::ListCategory();
+        $allarr = [];
+        foreach ($common as $key => $val)
+        {
+            $arr = [];
+            foreach ($data as $value)
+            {
+                if ($value->common_id==$key)
+                {
+                    $arr[$value->id] = $value->name;
+                }
+            }
+            $allarr[$val] = $arr;
+        }
+        return $allarr;
+        */
     }
 }

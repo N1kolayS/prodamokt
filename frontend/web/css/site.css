@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+
 }
 
 .wrap {
@@ -15,10 +16,15 @@ body {
 }
 
 .footer {
+    font-family: 'Play', sans-serif;
+    font-size: 12px;
     height: 60px;
     background-color: #f5f5f5;
     border-top: 1px solid #ddd;
-    padding-top: 20px;
+    padding-top: 10px;
+}
+.footer p {
+    margin-bottom: 5px;
 }
 
 .not-set {
@@ -57,11 +63,14 @@ body {
     font-size: 15px;
     padding-top: 26px;
     padding-bottom: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
     color: #4d4d4d;
 }
 .navbar-nav > li > a:focus,
 .navbar-nav > li > a:hover {
     background-color: #b4b4b4;
+    text-decoration: underline;
 }
 
 .navbar-nav > li > a.nav-premises:focus,
@@ -74,14 +83,24 @@ body {
     background-color: #ffbe93;
 }
 
+.navbar-nav > li > a.nav-service:focus,
+.navbar-nav > li > a.nav-service:hover {
+    background-color: #da86f4;
+}
+
 .navbar-nav > li > a.nav-jobs:focus,
 .navbar-nav > li > a.nav-jobs:hover {
     background-color: #89e787;
 }
 
+.navbar-nav > li > a.nav-elect:focus,
+.navbar-nav > li > a.nav-elect:hover {
+    background-color: #a4d5ff;
+}
+
 .navbar-nav > li > a.nav-stuff:focus,
 .navbar-nav > li > a.nav-stuff:hover {
-    background-color: #a4d5ff;
+    background-color: #B8DA2D;
 }
 
 .navbar-nav > li > a.nav-add {
@@ -116,41 +135,20 @@ body {
     outline: none;
 }
 
+
 .main-pin-text {
     font-family: 'Play', sans-serif;
-    font-size: 30px;
+    font-size: 24px;
     color: #4d4d4d;
+    margin-top: 2px;
 }
-
-.pin-premises {
-    width: 300px;
-    height: 400px;
-}
-.pin-premises p, .pin-jobs p {
+.main-pin-list {
     font-family: 'Play', sans-serif;
-    font-size: 20px;
-    color: #4d4d4d;
-    margin-bottom: 5px;
-    text-align: justify;
-}
-.pin-auto {
-    width: 300px;
-    height: 400px;
-}
-.pin-auto p {
-    font-family: 'Play', sans-serif;
-    font-size: 20px;
-    color: #4d4d4d;
-    margin-bottom: 5px;
-    text-align: justify;
-}
-.pin-jobs {
-    width: 300px;
-    height: 400px;
-}
-.pin-things {
-    width: 300px;
-    height: 400px;
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    word-break: keep-all;
 }
 
 /* Upload */
@@ -166,3 +164,8 @@ body {
 .main-search .main-search-input {
     width: 560px;
 }
+.opt {
+     text-transform: uppercase;
+     color: #333;
+     background: #CCC;
+ }

@@ -9,6 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use common\models\Type;
 
 AppAsset::register($this);
 ?>
@@ -37,11 +38,13 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Подать объявление', 'url' => ['/board/step'], 'linkOptions' => ['class' => 'nav-add']  ],
-        ['label' => 'Недвижимость', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-premises']  ],
-        ['label' => 'Автомобили', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-auto']  ],
-        ['label' => 'Работа', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-jobs'] ],
-        ['label' => 'Электроника', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
-        ['label' => 'Услуги', 'url' => ['/board/index'], 'linkOptions' => ['class' => 'nav-stuff'] ],
+        ['label' => 'Недвижимость', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_PLACE ], 'linkOptions' => ['class' => 'nav-premises']  ],
+        ['label' => 'Автомобили', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_AUTO], 'linkOptions' => ['class' => 'nav-auto']  ],
+        ['label' => 'Услуги', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_SERVICE], 'linkOptions' => ['class' => 'nav-service'] ],
+        ['label' => 'Работа', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_JOB], 'linkOptions' => ['class' => 'nav-jobs'] ],
+        ['label' => 'Электроника', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_ELECT], 'linkOptions' => ['class' => 'nav-elect'] ],
+        ['label' => 'Вещи', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_STUFF], 'linkOptions' => ['class' => 'nav-stuff'] ],
+
 
     ];
     if (Yii::$app->user->isGuest) {
@@ -77,7 +80,14 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; ПродамОкт <?= date('Y') ?></p>
+        <div class="col-md-2">
+            <p class="text-muted">&copy; ПродамОкт <?= date('Y') ?></p>
+        </div>
+        <div class="col-md-6">
+            <p class="text-muted"> Техническая поддержка <?= Html::a('support@prodamokt.ru', 'mailto:support@prodamokt.ru')?></p>
+            <p class="text-muted"> По вопросам релкамы и сотрудничества <?= Html::a('reklama@prodamokt.ru', 'mailto:reklama@prodamokt.ru')?></p>
+        </div>
+
 
 
     </div>

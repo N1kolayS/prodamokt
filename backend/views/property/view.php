@@ -37,5 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'sort',
         ],
     ]) ?>
+<hr />
 
+    <?php
+    echo $model->generateMode->create();
+    ?>
 </div>
