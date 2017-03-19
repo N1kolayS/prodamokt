@@ -73,7 +73,9 @@ use common\models\Type;
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="row">
                 <div class="col-md-4 ">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_JOB  ]) ?>">
