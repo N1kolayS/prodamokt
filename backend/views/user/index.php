@@ -17,6 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($model){
+            if ($model->status == $model::STATUS_DELETED) {
+                return ['class' => 'danger'];
+            }
+            else {
+                if ($model->isActivate())
+                    return ['class' => ''];
+                else
+                    return ['class' => 'info'];
+            }
+        },
         'columns' => [
 
             'id',
@@ -28,12 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'email:email',
              'phone',
-             'role',
+            [
+                'attribute' => 'role',
+                'format' => 'raw',
+                'value' => function($data){
+                    return $data->allRoles[$data->role];
+                },
+                'filter'=>$searchModel->AllRoleGrid(),
+            ],
+            // 'role',
             // 'status',
 
             ['class' => 'yii\grid\ActionColumn',
-                'headerOptions' => ['width' => '80'],
-                'template' => '{view} {update} ',
+                'headerOptions' => ['width' => '40'],
+                'template' => '{view}  ',
             ],
         ],
     ]); ?>

@@ -20,14 +20,14 @@ use yii\bootstrap\Html;
             <?php
             $image = $model->getImage();
             if($image) {
-                echo Html::img($image->getUrl('100x100'), ['class'=>'img-responsive']);
+                echo Html::img($image->getUrl('100x100'));
             }
 
             ?>
         </p>
         <div class="media-body">
             <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small></h4>
-
+            <p  class="list-group-item-text"><span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
             <br />
             <p class="list-group-item-text">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span> </p>
             <p class="text-muted pull-right">Опубликовано: <strong><?= Yii::$app->formatter->asDate($model->created_at, "php: d M H:i ") ?></strong> </p>

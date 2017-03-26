@@ -137,7 +137,7 @@ use common\models\Type;
             </div>
         </div>
         <div class="col-md-3">
-            <img src="http://fakeimg.pl/240x400/?text=Reklama&font=lobster">
+            <?= Html::a('<img src="/promo/sultan.gif" alt="Баня султан" height="400" width="240" class="img-responsive">', 'https://vk.com/territoriyavkusa', ['target' => '_blank'] ) ?>
         </div>
 
 

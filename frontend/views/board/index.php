@@ -22,8 +22,8 @@
             ]);
 
         ?>
-
-        <?php
+        <img src="https://fakeimg.pl/900x100/?text=Reklama_900_100&font=lobster" alt="Баня султан" class="img-responsive" >
+<?php
             echo \yii\widgets\ListView::widget([
             'pager' => [
                 'firstPageLabel' => 'Первая',
@@ -35,6 +35,8 @@
                 'class' => 'list-wrapper',
                 'id' => 'list-wrapper',
             ],
+                'emptyText' => 'Объявлений не найдено',
+                'summary' =>'<span class="text-muted">Объявления с {begin} по {end}. Всего {totalCount} </span> ',
 
             'itemView' => '_record',
         ]);
@@ -45,11 +47,4 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-1">
-        &nbsp;
-    </div>
-    <div class="col-md-10">
-        <img src="http://fakeimg.pl/950x100/?text=Reklama&font=lobster">
-    </div>
-</div>
+

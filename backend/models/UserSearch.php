@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\User;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserSearch represents the model behind the search form about `common\models\User`.
@@ -66,13 +67,16 @@ class UserSearch extends User
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'role', $this->role]);
 
         return $dataProvider;
+    }
+
+    public static function AllRoleGrid()
+    {
+        $data = Yii::$app->authManager->getRoles();
+        return ArrayHelper::map($data,'name','description');
     }
 }

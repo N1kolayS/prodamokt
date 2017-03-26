@@ -9,6 +9,7 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Добро пожаловать';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="site-login">
 

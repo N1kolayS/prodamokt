@@ -10,6 +10,10 @@
 namespace frontend\controllers;
 
 use common\models\User;
+use frontend\models\ChangePasswordForm;
+use frontend\models\Search;
+use frontend\models\SearchMy;
+use frontend\models\SmsActivateForm;
 use Yii;
 
 use yii\web\Controller;
@@ -35,7 +39,7 @@ class UserController extends Controller
                 'rules' => [
 
                     [
-                        'actions' => ['cabinet'],
+                        'actions' => ['cabinet', 'sms-activate', 'update', 'change-password'],
                         'allow' => true,
                         'roles' => ['user'],
                     ],
@@ -74,9 +78,75 @@ class UserController extends Controller
     public function actionCabinet()
     {
         $model = $this->findModel(Yii::$app->user->id);
+        $boards = new SearchMy($model->id);
+        $providerBoards = $boards->search();
         return $this->render('cabinet', [
             'model' => $model,
+            'providerBoards' => $providerBoards,
         ]);
+    }
+
+
+    /**
+     * Activate User with code from SMS
+     *
+     * @return mixed
+     */
+    public function actionSmsActivate()
+    {
+        $user = $this->findModel(Yii::$app->user->id);
+        if ($user->isActivate())
+        {
+            return $this->goHome();
+        }
+
+        $model = new SmsActivateForm($user);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->Activate())
+            {
+                Yii::$app->session->setFlash('success', 'Ваш номер успешно подтвердился. Теперь вам доступны все возможности');
+                return $this->redirect(['cabinet']);
+            }
+
+        }
+        return $this->render('sms-activate', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate()
+    {
+        $model = $this->findModel(Yii::$app->user->id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['cabinet']);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    public function actionChangePassword()
+    {
+        $model = new ChangePasswordForm($this->findModel(Yii::$app->user->id));
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->Change())
+            {
+                Yii::$app->session->setFlash('success', 'Ваш пароль успешно изменен');
+                return $this->redirect(['cabinet']);
+            }
+
+        }
+        return $this->render('change-password', [
+            'model' => $model,
+        ]);
+
     }
 
     /**

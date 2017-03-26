@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\HtmlPurifier;
 use yii\web\IdentityInterface;
 
 /**
@@ -22,9 +23,14 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property string $role
+ * @property string $sms_code_activate
+ *
+ * @property Board[] $boards
+ *
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
@@ -38,11 +44,13 @@ class User extends ActiveRecord implements IdentityInterface
     public $old_password;
 
     public function beforeValidate() {
+        // Чистим от тегов входные данные
+        $this->username = strip_tags($this->username);
+        $this->email = strip_tags($this->email);
         $this->phone = str_replace('-', null, $this->phone);
 
         return parent::beforeValidate();
     }
-
 
     /**
      * @inheritdoc
@@ -68,9 +76,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+
+            ['username', 'trim'],
+            ['username', 'required'],
+
+            ['username', 'string', 'min' => 2, 'max' => 255],
+
             [['role'], 'required', 'on' => 'update'],
-            [['role'], 'string', 'max' => 10],
-            [['phone'], 'string', 'length' => 10],
+            [['role', 'sms_code_activate'], 'string', 'max' => 10],
+            ['phone', 'is10NumbersOnly'],
             ['phone', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Этот Номер телефона уже занят.'],
 
             [['new_password', 'old_password'],  'string', 'max' => 50, 'min'=>6],
@@ -86,6 +100,13 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    public function is10NumbersOnly($attribute)
+    {
+        if (!preg_match('/^[0-9]{10}$/', $this->$attribute)) {
+            $this->addError($attribute, 'Телефон должен состоять из 10 цифр');
+        }
+    }
+
     /**
      * @inheritdoc
      */
@@ -94,14 +115,23 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'created_at' => 'Дата регистрации',
-            'fio' => 'Имя пользователя',
+            'updated_at' => 'Дата изменения',
+            'username' => 'Имя',
             'info' => 'Инфо',
             'phone' => 'Телефон',
             'role' => 'Права',
             'agent' => 'Агентство',
             'status' => 'Статус пользователя',
-
+            'sms_code_activate' => 'Код активации',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBoards()
+    {
+        return $this->hasMany(Board::className(), ['user_id' => 'id']);
     }
 
 
@@ -249,6 +279,69 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * @author Nikolay
+     * Generate SMS code
+     */
+    public function generateSmsCode()
+    {
+        $this->sms_code_activate = mt_rand(1,9).mt_rand(1,9).mt_rand(1,9).mt_rand(1,9).mt_rand(1,9);
+    }
+
+    /**
+     * @author Nikolay, Usage library Zelenin
+     * @throws \Zelenin\SmsRu\Exception\Exception
+     */
+    public function SendSms()
+    {
+        if (YII_ENV_PROD)
+        {
+            $client = new \Zelenin\SmsRu\Api(new \Zelenin\SmsRu\Auth\ApiIdAuth(Yii::$app->params['sms.ru.api_id']));
+            $sms = new \Zelenin\SmsRu\Entity\Sms('7'.$this->phone, 'Код: '. $this->sms_code_activate);
+            $client->smsSend($sms);
+        }
+        else
+        {
+            $file = '/home/nikolay/sms.txt';
+            file_put_contents($file, $this->sms_code_activate.PHP_EOL);
+        }
+
+        /* Uncomment for Real Send Sms
+
+        #*/
+    }
+
+    /**
+     *
+     * @author Nikolay
+     * @return bool
+     */
+    public function isActivate()
+    {
+        if ($this->sms_code_activate==null)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @param $sms_code
+     * @return bool
+     */
+    public function validateSmsCode($sms_code)
+    {
+        if ($this->sms_code_activate == $sms_code)
+            return true;
+        else
+            return false;
+    }
+
+    public function Activate()
+    {
+        $this->sms_code_activate = null;
+        $this->updateAll(['sms_code_activate'=>$this->sms_code_activate], ['id'=>$this->id]);
+    }
+
+    /**
+     * @author Nikolay
      * Get All role from RBAC
      * @return array
      */
@@ -263,6 +356,15 @@ class User extends ActiveRecord implements IdentityInterface
         return $roles;
     }
 
+    public static function listStatus()
+    {
+        $data = [
+            self::STATUS_ACTIVE => 'Включен',
+            self::STATUS_DELETED => 'Отключен'
+        ];
+        return $data;
+    }
+
     /**
      * Set role in Base
      * @param bool $insert
@@ -270,13 +372,28 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function beforeSave($insert)
     {
-        parent::beforeSave($insert);
-        if ($this->isNewRecord)
+        if (parent::beforeSave($insert))
         {
-            // Роль по умолчанию
-            $this->role = User::ROLE_DEFAULT;
+
+
+            if ($this->isNewRecord)
+            {
+                // Роль по умолчанию
+                $this->role = User::ROLE_DEFAULT;
+            }
+            else
+            {
+                // Номер телефона изменился, генерируем код
+                if (!empty($this->getDirtyAttributes(['phone'])))
+                {
+                    $this->generateSmsCode();
+                }
+
+            }
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     /**
@@ -296,8 +413,14 @@ class User extends ActiveRecord implements IdentityInterface
         }
         else
         {
-            // Update user
-            //Change role
+            // Код активации не ноль, значит меняли номер, отправляем смс
+            if ($this->sms_code_activate!=null)
+            {
+                $this->SendSms();
+            }
+            /**
+             * Update Roles
+             */
             Yii::$app->authManager->revokeAll($this->id);
             $userRole = Yii::$app->authManager->getRole($this->role);
             Yii::$app->authManager->assign($userRole, $this->id);

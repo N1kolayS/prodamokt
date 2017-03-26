@@ -26,12 +26,12 @@ class UserController extends Controller
 
                 'rules' => [
                     [
-                        'actions' => ['delete'],
+                        'actions' => ['delete', 'update'],
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
                     [
-                        'actions' => ['index', 'view','create', 'update'],
+                        'actions' => ['index', 'view','create'],
                         'allow' => true,
                         'roles' => ['manager'],
                     ],
@@ -73,23 +73,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
 
     /**
      * Updates an existing User model.
@@ -118,9 +101,19 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if ($model->boards==null)
+        {
+            $model->delete();
+            return $this->redirect(['index']);
+        }
+        else
+        {
+            Yii::$app->session->setFlash('error', 'У пользователя есть объявления. Удалите сначала все объявления');
+            return $this->redirect(['view', 'id' => $id]);
+        }
 
-        return $this->redirect(['index']);
+
     }
 
     /**

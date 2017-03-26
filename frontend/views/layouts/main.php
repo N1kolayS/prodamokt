@@ -84,11 +84,10 @@ AppAsset::register($this);
         <div class="col-md-2">
             <p class="text-muted">&copy; ПродамОкт <?= date('Y') ?></p>
         </div>
-        <div class="col-md-6">
-            <p class="text-muted"> Техническая поддержка <?= Html::a('support@prodamokt.ru', 'mailto:support@prodamokt.ru')?></p>
-            <p class="text-muted"> По вопросам релкамы и сотрудничества <?= Html::a('reklama@prodamokt.ru', 'mailto:reklama@prodamokt.ru')?></p>
+        <div class="col-md-8">
+            <p class="text-muted"> Техническая поддержка <?= Html::a('support@prodamokt.ru', 'mailto:support@prodamokt.ru')?>. По вопросам релкамы и сотрудничества <?= Html::a('reklama@prodamokt.ru', 'mailto:reklama@prodamokt.ru')?></p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <p class="pull-right">
                 <?php
                 if (YII_ENV_PROD)

@@ -63,22 +63,10 @@ class BoardController extends Controller
     public function actionIndex()
     {
         $model = new Search();
-
-        //$model->setAttributes(Yii::$app->request->getQueryParam('Search'), false);
-        //   $model->validate();
-        //Yii::$app->view->params['searchform'] = $model;
-        //echo '<br><br><br><br><br><br><pre>';
-        //  echo var_dump(Yii::$app->request->getQueryParam('Search'));
         $dataProvider = $model->search(Yii::$app->request->getQueryParam('Search'));
-        //echo var_dump($model);
-
-
-        //echo '</pre>';
 
         return $this->render('index', [
             'model' => $model,
-
-
             'dataProvider' => $dataProvider,
         ]);
 
@@ -136,7 +124,8 @@ class BoardController extends Controller
                 $model->attachImage($path);
                 unlink($path);
             }
-            return $this->redirect(['site/index']);
+            Yii::$app->session->setFlash('success', 'Объявление <strong>'. $model->name .'</strong> успешно добавлено');
+            return $this->redirect(['user/cabinet']);
         } else {
             return $this->render('create', [
                 'model' => $model,

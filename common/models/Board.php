@@ -22,6 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $looks
  * @property integer $enable
  * @property integer $marked
+ * @property integer $started_at
  *
  * @property Town $town
  * @property Type $type
@@ -52,6 +53,15 @@ class Board extends \yii\db\ActiveRecord
 
     }
 
+    public function beforeValidate() {
+        // Чистим от тегов входные данные
+        $this->name = strip_tags($this->name);
+        $this->body = strip_tags($this->body);
+
+
+        return parent::beforeValidate();
+    }
+
 
     /**
      * @inheritdoc
@@ -68,7 +78,7 @@ class Board extends \yii\db\ActiveRecord
     {
         return [
             [[ 'type_id', 'town_id',  'name', 'body'], 'required'],
-            [['user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'finished_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
+            [['user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'finished_at', 'started_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
             [['body'], 'string'],
             [['cost'], 'number'],
             [['name'], 'string', 'max' => 100],
@@ -96,6 +106,7 @@ class Board extends \yii\db\ActiveRecord
             'created_at' => 'Создано',
             'updated_at' => 'Изменено',
             'finished_at' => 'Срок до',
+            'started_at' => 'Старт',
             'name' => 'Заголовок',
             'body' => 'Текст',
             'cost' => 'Стоимость',
@@ -151,7 +162,7 @@ class Board extends \yii\db\ActiveRecord
      */
     public function isActive()
     {
-        if (($this->finished_at <= time())&&$this->enable)
+        if (($this->finished_at <= time())&&$this->enable&&$this->started_at >= time())
         {
             return true;
         }
@@ -175,7 +186,8 @@ class Board extends \yii\db\ActiveRecord
 
             if ($this->isNewRecord) {
                 $this->user_id = Yii::$app->user->id;
-                $this->finished_at = $this->created_at + 3600*24*30;
+                $this->finished_at = $this->created_at + Yii::$app->params['board.lifetime'];
+                $this->started_at  = $this->created_at + Yii::$app->params['board.delay'];
             }
             return true;
         }
@@ -190,8 +202,8 @@ class Board extends \yii\db\ActiveRecord
      */
     public function afterSave ($insert, $changedAttributes)
     {
-        if (parent::afterSave($insert, $changedAttributes))
-        {
+        parent::afterSave($insert, $changedAttributes);
+
             if ((!$insert)and($this->property)) // Check update record and Property exist
             {
                 // Удаляем все значения свойств
@@ -206,11 +218,11 @@ class Board extends \yii\db\ActiveRecord
                     $model_prop = new BoardProperty();
                     $model_prop->board_id = $this->id;
                     $model_prop->property_id = $key;
-                    $model_prop->value = $prop;
+                    $model_prop->value = strip_tags($prop);
                     $model_prop->save();
                 }
             }
-        }
+
     }
 
     /**

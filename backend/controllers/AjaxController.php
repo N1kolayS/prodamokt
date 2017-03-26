@@ -9,6 +9,7 @@
 
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use yii\helpers\Json;
 use common\models\Property;
@@ -26,7 +27,7 @@ class AjaxController extends Controller {
 
                 'rules' => [
                     [
-                        'actions' => ['property-mode',],
+                        'actions' => ['property-mode', 'user-activation', 'user-password-reset'],
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
@@ -55,4 +56,32 @@ class AjaxController extends Controller {
             echo Json::encode($result);
         }
     }
+
+    /**
+     * Activate User
+     */
+    public function actionUserActivation()
+    {
+        if (Yii::$app->request->isAjax) {
+            $id = Yii::$app->getRequest()->getQueryParam('id');
+            if (($model = User::findOne($id)) !== null) {
+                $model->Activate();
+                echo Json::encode(['status' => 0]);
+            }
+        }
+    }
+
+    public function actionUserPasswordReset()
+    {
+        if (Yii::$app->request->isAjax) {
+            $id = Yii::$app->getRequest()->getQueryParam('id');
+            if (($model = User::findOne($id)) !== null) {
+
+                $model->setPassword($model->phone);
+                $model->save();
+                echo Json::encode(['status' => 0]);
+            }
+        }
+    }
+
 }

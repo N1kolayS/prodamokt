@@ -45,7 +45,7 @@ class SignupForm extends Model
     public function is10NumbersOnly($attribute)
     {
         if (!preg_match('/^[0-9]{10}$/', $this->$attribute)) {
-            $this->addError($attribute, 'Телефон должне состоять из 10 цифр');
+            $this->addError($attribute, 'Телефон должен состоять из 10 цифр');
         }
     }
 
@@ -77,6 +77,9 @@ class SignupForm extends Model
         $user->phone = $this->phone;
         $user->setPassword($this->password);
         $user->generateAuthKey();
+        $user->generateSmsCode();
+        // Send Sms
+        $user->SendSms();
         
         return $user->save() ? $user : null;
     }
