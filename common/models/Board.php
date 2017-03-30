@@ -39,6 +39,9 @@ class Board extends \yii\db\ActiveRecord
 
     public $images;
 
+    const STATUS_ENABLE  = 1;
+    const STATUS_DISABLE = 0;
+
     /**
      * @inheritdoc
      */
@@ -158,15 +161,130 @@ class Board extends \yii\db\ActiveRecord
     }
 
     /**
+     * Check exist image
      * @return bool
      */
-    public function isActive()
+    public function existImages()
     {
-        if (($this->finished_at <= time())&&$this->enable&&$this->started_at >= time())
+        if ($this->getImages()[0]->urlAlias != 'placeHolder')
         {
             return true;
         }
         return false;
+    }
+
+    public function correctImages()
+    {
+        // Изображения существуют, но главного нет
+        if ($this->existImages()&&($this->getImage()->urlAlias == 'placeHolder' ))
+        {
+            $this->setMainImage($this->getImages()[0]); // Установить главную из списка
+        }
+    }
+
+    /**
+     * Check Active board
+     * @return bool
+     */
+    public function isActive()
+    {
+        if (($this->finished_at <= time())&&$this->enable&&$this->started_at <= time())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public static function createTmpDir()
+    {
+        $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
+        if (!is_dir($tmp_user_dir))
+        {
+             mkdir($tmp_user_dir);
+        }
+
+        return $tmp_user_dir;
+    }
+
+    public static function deleteTmpDir()
+    {
+        $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
+        if (is_dir($tmp_user_dir))
+        {
+            $files = array_diff(scandir($tmp_user_dir), array('.','..'));
+            foreach ($files as $file) {
+                unlink("$tmp_user_dir/$file");
+            }
+            rmdir($tmp_user_dir);
+        }
+        return true;
+    }
+
+    public static function scanDirImages()
+    {
+        $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
+        if (is_dir($tmp_user_dir))
+        {
+            $files = array_diff(scandir($tmp_user_dir), array('.','..'));
+            return ['path' => $tmp_user_dir, 'url'=> '/uploadimg/'.Yii::$app->user->id.'-tmp/', 'files' => $files] ;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Check start board
+     * @return bool
+     */
+    public function isStarted()
+    {
+        if ($this->started_at <= time())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function getPrice()
+    {
+        if (!empty($this->type->cost_name))
+        {
+            $cost = 'Не указано';
+            if (!empty($this->cost))
+                $cost = Yii::$app->formatter->asCurrency($this->cost);
+
+            return ['name' => $this->type->cost_name, 'cost' => $cost];
+        }
+
+        return false;
+    }
+
+    /**
+     * Check Finished
+     * @return bool
+     */
+    public function isFinished()
+    {
+        if ($this->finished_at <= time())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function Prolong()
+    {
+        $this->started_at = time();
+        $this->finished_at = $this->started_at + Yii::$app->params['board.lifetime'];
+        return true;
     }
 
     /**

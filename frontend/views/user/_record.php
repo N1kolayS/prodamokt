@@ -14,24 +14,34 @@ use yii\bootstrap\Html;
 
 ?>
 
-<a href="<?=Url::toRoute(['board/view', 'id' => $model->id])?>" class="list-group-item  marked_<?=$model->marked?>">
+<a href="<?=Url::toRoute(['user/board-view', 'id' => $model->id])?>" class="list-group-item  marked_<?=$model->marked?>">
     <div class="media">
-        <p class="pull-left">
+        <div class="col-md-2">
             <?php
             $image = $model->getImage();
             if($image) {
                 echo Html::img($image->getUrl('100x100'));
             }
 
+
             ?>
-        </p>
-        <div class="media-body">
-            <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small></h4>
-            <p  class="list-group-item-text"><span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
-            <br />
-            <p class="list-group-item-text">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span> </p>
-            <p class="text-muted pull-right">Опубликовано: <strong><?= Yii::$app->formatter->asDate($model->created_at, "php: d M H:i ") ?></strong> </p>
         </div>
+        <div class="col-md-6">
+            <div class="media-body">
+                <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small></h4>
+
+                <br />
+                <p class="list-group-item-text"><?php if ($model->price)  echo  $model->price['name'].': <span class="label label-success">'. $model->price['cost'].'</span>'; ?> </p>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            <p class="text-muted text-right"><?php if ($model->isStarted()) { echo 'Опубликовано: <strong>'. Yii::$app->formatter->asDate($model->started_at, "php: d M H:i ").'</strong>'; } else { echo 'Активируется через: <strong>'. intval(($model->started_at-time())/60).'</strong> минут'; }  ?>  </p>
+            <p class="text-muted text-right"><?php if ($model->isFinished()) { echo 'Истекло'; } else { echo 'Истекает: <strong>'. Yii::$app->formatter->asDate($model->finished_at, "php: d M H:i ").'</strong>'; } ?></p>
+        </div>
+
+
     </div>
 </a>
 <br />

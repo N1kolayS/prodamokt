@@ -70,6 +70,8 @@ class Search extends Board
         {
             $query = Board::find();
         }
+        $time = time();
+        $query->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=1");
 
 
         // grid filtering conditions
@@ -89,7 +91,7 @@ class Search extends Board
             ],
             'sort' => [
                 'defaultOrder' => [
-                    'created_at' => SORT_DESC,
+                    'started_at' => SORT_DESC,
 
                 ]
             ],

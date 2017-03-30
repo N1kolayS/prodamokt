@@ -24,6 +24,12 @@ class BoardProperty extends \yii\db\ActiveRecord
         return '{{%board_property}}';
     }
 
+    public function beforeValidate() {
+        // Чистим от тегов входные данные
+        $this->value = strip_tags($this->value);
+        return parent::beforeValidate();
+    }
+
     /**
      * @inheritdoc
      */

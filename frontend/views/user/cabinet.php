@@ -15,10 +15,11 @@ $this->title = 'Мой кабинет';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-cabinet">
-    <h2>Здравствуйте, <?= $model->username ?></h2>
+
 
     <div class="row">
         <div class="col-md-8">
+            <h3 class="text-center">Мои объявления</h3>
             <?php
             echo \yii\widgets\ListView::widget([
                 'pager' => [
@@ -39,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
         <div class="col-md-4">
+            <h3 class="text-center">Здравствуйте, <?= $model->username ?></h3>
             <div class="panel panel-info">
                 <div class="panel-heading">
                 <h2 class="panel-title text-center">Мои данные </h2>

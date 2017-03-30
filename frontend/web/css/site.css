@@ -151,7 +151,7 @@ body {
     word-break: keep-all;
 }
 
-/* Upload */
+/* Upload images */
 .kv-file-upload {
     display: none;
 }
@@ -160,6 +160,16 @@ body {
     display: none;
 }
 
+.img-upload
+{
+    height: 200px;
+    width: 200px;
+}
+
+.img-upload-field
+{
+    width: 250px;
+}
 /* Search */
 .main-search .main-search-input {
     width: 560px;
@@ -171,4 +181,26 @@ body {
  }
 .site-index {
     padding-top: 20px;
+}
+
+/* Upload button */
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
 }

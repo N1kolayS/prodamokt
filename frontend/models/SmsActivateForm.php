@@ -51,7 +51,7 @@ class SmsActivateForm extends Model
     public function attributeLabels()
     {
         return [
-            'sms_code' => 'Код',
+            'sms_code' => 'Код из смс',
         ];
     }
 

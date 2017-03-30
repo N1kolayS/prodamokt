@@ -32,8 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             'type_id',
             'town_id',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'started_at:datetime',
+            'finished_at:datetime',
+            'updated_at:datetime',
+
             'name',
             'body:ntext',
             'cost',
@@ -43,5 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'marked',
         ],
     ]) ?>
+    start: <?=$model->started_at?><br />
+    time: <?=time()?><br />
+    <?=$model->isStarted()?>
+
 
 </div>

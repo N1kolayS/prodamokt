@@ -13,24 +13,25 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Изменить пароль';
-$this->params['breadcrumbs'][] = ['label' => 'Кабинет', 'url' => ['cabinet']];
+$this->params['breadcrumbs'][] = ['label' => 'Мой кабинет', 'url' => ['cabinet']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-cabinet">
-    <h2>Здравствуйте, <?= $model->user->username ?></h2>
+<div class="user-change-password">
 
     <div class="row">
-        <?php $form = ActiveForm::begin(); ?>
+        <div class="col-md-12 text-center">
+            <h3><?= $this->title ?></h3>
+            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-        <?= $form->field($model, 'password')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'password')->textInput(['autofocus' => true]) ?>
 
-        <?= $form->field($model, 'new_password')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'new_password')->textInput(['autofocus' => true]) ?>
 
-        <div class="form-group">
-            <?= Html::submitButton('Изменить', ['class' => 'btn btn-primary']) ?>
+            <div class="form-group">
+                <?= Html::submitButton('Изменить', ['class' => 'btn btn-primary']) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
         </div>
-
-        <?php ActiveForm::end(); ?>
     </div>
-
 </div>

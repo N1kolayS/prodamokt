@@ -90,7 +90,7 @@ class BoardController extends Controller
     {
         $list_types = Type::find()->orderBy('sort')->all();
         $list_category = Type::ListCategory();
-
+        Board::deleteTmpDir();
         return $this->render('step', [
             'list_types' => $list_types,
             'list_category' => $list_category,
@@ -106,6 +106,7 @@ class BoardController extends Controller
     {
         $type_id =  intval($id);
 
+
         $model_type = $this->findModelType($type_id);
 
         $model = new Board();
@@ -118,12 +119,16 @@ class BoardController extends Controller
             $model->images = UploadedFile::getInstances($model, 'images');
            // echo var_dump($model->images);
            // die();
-            foreach ($model->images as $file) {
-                $path = Yii::getAlias('@frontend/web/uploadimg/').uniqid().'.'.$file->extension;
-                $file->saveAs($path);
-                $model->attachImage($path);
-                unlink($path);
+            $scan_dir = Board::scanDirImages();
+            if ($scan_dir)
+            {
+                foreach ($scan_dir['files'] as $file) {
+                    $path = $scan_dir['path'].$file;
+                    $model->attachImage($path,  false, $model->id.'-'. $file);
+                }
             }
+
+            Board::deleteTmpDir();
             Yii::$app->session->setFlash('success', 'Объявление <strong>'. $model->name .'</strong> успешно добавлено');
             return $this->redirect(['user/cabinet']);
         } else {

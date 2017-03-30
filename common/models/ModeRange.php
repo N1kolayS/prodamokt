@@ -43,6 +43,33 @@ class ModeRange extends \yii\base\Object
         else
             return null;
     }
+
+    public function Update($val)
+    {
+        $data = Json::decode($this->value);
+        if (array_key_exists('prompt', $data)&&array_key_exists('start', $data)&&array_key_exists('stop', $data)&&array_key_exists('step', $data))
+        {
+            $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+            if ($data['prompt'])
+            {
+                $select_prompt = '';
+                if ($val==0)
+                    $select_prompt = 'selected';
+                $input = $input. '<option value="" '. $select_prompt .'> - '. $data['prompt'] .' - </option>';
+            }
+
+            for ($i = $data['start']; $i <= $data['stop']; $i++)
+            {
+                $select = '';
+                if ($val == $i)
+                    $select = 'selected';
+                $input = $input. '<option value = "'.$i .'"  '. $select .'>'. $i .'</option>';
+            }
+            return $input. '</select>';
+        }
+        else
+            return null;
+    }
     /**
      * Формирует JSON строку при создании записи
      */

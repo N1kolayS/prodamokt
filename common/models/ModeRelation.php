@@ -39,6 +39,23 @@ class ModeRelation extends \yii\base\Object
         return $input. '</select>';
     }
 
+    public function Update($val)
+    {
+        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+        foreach (explode(';', $this->value) as $value)
+        {
+            if (trim($value)=='0')
+            {
+                $input = $input. '<option value="">- Выберите: '. $this->name .' -</option>';
+            }
+            else
+            {
+                $input = $input. '<option value = "'. trim($value) .'">'. trim($value) .'</option>';
+            }
+        }
+        return $input. '</select>';
+    }
+
     /**
      * Формирует JSON строку при создании записи
      */

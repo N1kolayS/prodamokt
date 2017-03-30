@@ -31,6 +31,11 @@ class ModeValue extends \yii\base\Object
         return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
     }
 
+    public function Update($val)
+    {
+        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text" value="'. $val .'">';
+    }
+
     /**
      * Формирует JSON строку при создании записи
      */
