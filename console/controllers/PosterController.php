@@ -36,10 +36,10 @@ class PosterController extends Controller {
                     {
                         $image = Yii::getAlias('@frontend/web/images/').'logo0.png';
                     }
-                    echo $board->name.PHP_EOL. $board->body. PHP_EOL;
+                    //echo $board->name.PHP_EOL. $board->body. PHP_EOL;
                     $vkApi = new Vk(['access_token' => Yii::$app->params['vk.token']]);
-                   // $vkApi->postToPublic(Yii::$app->params['vk.group'], $board->name.PHP_EOL. $board->body. PHP_EOL. Url::to(['board/view', 'id'=>$board->id]), $image);
-                    //Board::updateAll(['post_vk' => time()], ['id' => $board->id]);
+                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $board->name.PHP_EOL. $board->body. PHP_EOL. Url::to(['board/view', 'id'=>$board->id]), $image);
+                    Board::updateAll(['post_vk' => time()], ['id' => $board->id]);
                 }
 
             }
