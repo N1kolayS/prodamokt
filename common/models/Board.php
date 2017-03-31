@@ -188,7 +188,7 @@ class Board extends \yii\db\ActiveRecord
      */
     public function isActive()
     {
-        if (($this->finished_at <= time())&&$this->enable&&$this->started_at <= time())
+        if (($this->finished_at >= time())&&$this->enable&&$this->started_at <= time())
         {
             return true;
         }
