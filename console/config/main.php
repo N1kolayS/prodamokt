@@ -26,6 +26,13 @@ return [
                 ],
             ],
         ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'baseUrl' => 'https://prodamokt.ru',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
     ],
+
     'params' => $params,
 ];

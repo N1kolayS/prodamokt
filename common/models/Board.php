@@ -357,4 +357,9 @@ class Board extends \yii\db\ActiveRecord
         return false;
     }
 
+
+    public function pubVk()
+    {
+        return true;
+    }
 }

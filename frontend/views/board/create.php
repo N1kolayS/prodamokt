@@ -43,8 +43,9 @@ function delImage(name, id_index)
 }
 $('#file').change(function() {
 
-    var btn =  $('#loading-btn');
-    btn.button('loading');
+    $("#wait_loading").show();
+    $('#loading-btn').hide();
+
     var lengthFiles = this.files.length-1;
     jQuery.each(this.files, function(index, value) {
         //btn.addClass('disabled');
@@ -64,17 +65,15 @@ $('#file').change(function() {
             if (respond.success)
             {
                 id_i++;
-                console.log(index, lengthFiles);
                 if (index == lengthFiles)
                 {
-                    btn.button('reset');
+                    $("#wait_loading").hide();
+                    $('#loading-btn').show();
                 }
                 $("#img_list").append('<li  id="thumb_'+id_i +'"><div class="thumbnail img-upload">'+
                                 '<img src="'+respond.image.url +'" height="150" class="img-responsive" />' +
                                 '<div class="caption"><a class="btn btn-danger btn-sm" role="button" onclick="delImage(\''+respond.image.name +'\', '+id_i+')"><span class="glyphicon glyphicon-trash"></span> Удалить Изображение</a>'+
                                 '</div></div></li>');
-
-
             }
         }
     });
@@ -144,6 +143,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <label class="btn btn-info btn-file" id="loading-btn" data-loading-text="Пожалуйста подождите. Идет Загрузка фото ...">
                     <span class="glyphicon glyphicon-picture"></span> Добавить фото <?= Html::input('file', 'images[]', null, ['multiple' => true , 'id' => 'file'])?>
                 </label>
+                <span class="label label-warning" style="display: none" id="wait_loading">Пожалуйста ожидайте, идет загрузка файлов.</span>
 
             </div>
 
