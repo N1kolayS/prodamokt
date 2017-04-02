@@ -161,10 +161,8 @@ $this->registerJs($script, yii\web\View::POS_END);
         </div>
         <div class="col-md-3">
            <div id="promo_1" style="display: none"><?= Html::a('<img src="/promo/sultan.gif" alt="Баня султан" height="400" width="240" class="img-responsive">', 'https://vk.com/territoriyavkusa', ['target' => '_blank'] ) ?></div>
-           <div id="promo_2" style="display: none"> <?= Html::a('<img src="/promo/autokruiz.jpg" alt="Уфа-Казань" height="400" width="240" class="img-responsive">', 'https://vk.com/territoriyavkusa', ['target' => '_blank'] ) ?></div>
+           <div id="promo_2" style="display: none"> <?= Html::a('<img src="/promo/avto.gif" alt="Уфа-Казань" height="400" width="240" class="img-responsive">', 'http://авто-круиз.рф/', ['target' => '_blank'] ) ?></div>
         </div>
-
-
 
     </div>
 
