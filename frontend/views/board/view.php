@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $image = $model->getImage();;
             if ($image)
             {
-                echo Html::img($image->getUrl('300x'));
+                echo Html::img($image->getUrl('400x'));
             }
 
             ?>
