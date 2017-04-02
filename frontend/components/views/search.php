@@ -127,31 +127,7 @@ $this->registerJs($script, yii\web\View::POS_END);
 
         </div>
         <div class="panel-footer">
-            <div class="row">
 
-                <div class="col-md-8">
-
-                </div>
-                <div class="col-md-4">
-                    <div class="text-right" style="display: none" id="prices_field">
-                        <label>Цена</label>
-                        <?= $form->field($model, 'price_min')->widget(\yii\widgets\MaskedInput::className(), [
-                            'clientOptions' => [
-                                'alias' =>  'decimal',
-                                'groupSeparator' => ' ',
-                                'autoGroup' => true,
-                            ],
-                        ])->label(false) ?> -
-                        <?= $form->field($model, 'price_max')->widget(\yii\widgets\MaskedInput::className(), [
-                            'clientOptions' => [
-                                'alias' =>  'decimal',
-                                'groupSeparator' => ' ',
-                                'autoGroup' => true,
-                            ],
-                        ])->label(false) ?>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
