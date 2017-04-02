@@ -26,7 +26,7 @@ use yii\bootstrap\Html;
             ?>
         </p>
         <div class="media-body">
-            <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small></h4>
+            <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small> </h4>
 
             <br />
             <p class="list-group-item-text">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span> </p>

@@ -10,6 +10,7 @@
 namespace frontend\controllers;
 
 use common\models\Board;
+use common\models\Type;
 use yii\web\Session;
 
 use Yii;
@@ -29,6 +30,7 @@ class AjaxController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['image-delete', 'image-add', 'image-create-add', 'image-create-delete'],
                 'rules' => [
                     [
                         'actions' => ['image-delete', 'image-add', 'image-create-add', 'image-create-delete'],
@@ -48,15 +50,20 @@ class AjaxController extends Controller {
     {
         if (Yii::$app->request->isAjax) {
 
+            $id = intval($id);
+
+            $type = Type::findOne($id);
+
+            $prop = [];
             $properties =  Property::find()->where(['type_id' => $id])->all();
 
-            $result = [];
+
 
             foreach ($properties as $property)
             {
-                $result[] = array('id' => $property->id, 'mode' => $property->mode, 'val' => $property->generateMode->search());
+                $prop[] = array('id' => $property->id, 'mode' => $property->mode, 'val' => $property->generateMode->search());
             }
-            echo Json::encode($result);
+            echo Json::encode(['price'=>$type->cost_name, 'property' => $prop]);
         }
     }
 

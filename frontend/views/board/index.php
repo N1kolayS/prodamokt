@@ -22,7 +22,9 @@
             ]);
 
         ?>
-        <img src="https://fakeimg.pl/900x100/?text=Reklama_900_100&font=lobster" alt="Баня султан" class="img-responsive" >
+        <div class="promo text-center">
+            <?=\yii\helpers\Html::a('<img src="/promo/club85420699.gif" alt="Всё для девушек"  height="100" width="900" >', 'https://vk.com/club85420699', ['target'=>'_blank'])?>
+        </div>
 <?php
             echo \yii\widgets\ListView::widget([
             'pager' => [

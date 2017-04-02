@@ -64,7 +64,8 @@ class BoardController extends Controller
     {
         $model = new Search();
         $dataProvider = $model->search(Yii::$app->request->getQueryParam('Search'));
-
+        $model->price_min = '';
+        $model->price_max = '';
         return $this->render('index', [
             'model' => $model,
             'dataProvider' => $dataProvider,

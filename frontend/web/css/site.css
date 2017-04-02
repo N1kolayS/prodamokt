@@ -1,3 +1,8 @@
+.xdebug-var-dump {
+    position: absolute;
+    z-index: 99999999;
+    background: #dddddd;
+}
 html,
 body {
     height: 100%;
@@ -179,6 +184,10 @@ body {
      color: #333;
      background: #CCC;
  }
+.field-search-price_min input.form-control, .field-search-price_max input.form-control
+{
+    width: 90px;
+}
 .site-index {
     padding-top: 20px;
 }

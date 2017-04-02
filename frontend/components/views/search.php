@@ -19,7 +19,12 @@ $properties_route = Url::toRoute('ajax/get-properties');
 
 $script = <<< JS
     var input_filed;
+    var price_filed = $("#prices_field");
+    var type_id = $("#search-type_id");
     function loadProp(id) {
+        $("#search-price_min").val('');
+        $("#search-price_max").val('');
+        price_filed.hide();
         // Выбран общий тип или конкретная категория
         if (id.indexOf('common') >= 0)
         {
@@ -37,7 +42,13 @@ $script = <<< JS
             .done(function( json )
             {
 
-                $.each(JSON.parse(json), function() {
+                var result = JSON.parse(json);
+                if (result.price != "")
+                {
+                    $( price_filed ).find( "label" ).html(result.price);
+                    price_filed.show();
+                }
+                $.each(result.property, function() {
                     if (this.mode==" 1")
                     {
 
@@ -46,9 +57,19 @@ $script = <<< JS
 
             });
         }
-        // Выбрать данные
 
     }
+
+    $(document).ready(function() {
+
+        if (type_id.val()!='')
+        {
+            loadProp(type_id.val());
+        }
+
+
+
+    });
 
 JS;
 $this->registerJs($script, yii\web\View::POS_END);
@@ -61,6 +82,8 @@ $this->registerJs($script, yii\web\View::POS_END);
         'class' => 'form-inline main-search'
     ]
 ]); ?>
+<?= Html::activeHiddenInput($model, 'common_id') ?>
+<?= Html::activeHiddenInput($model, 'type_id') ?>
     <div class="panel panel-warning">
         <div class="panel-heading">
             <h2 class="panel-title text-center">Поиск Объявлений</h2>
@@ -78,6 +101,7 @@ $this->registerJs($script, yii\web\View::POS_END);
             {
                 $default = $model->type_id;
             }
+
              echo Html::dropDownList('name', $default, \common\models\Type::AllTypeSearch(),
                  [
                      'options' => \common\models\Type::AllTypeSearch(true),
@@ -85,6 +109,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                      'onchange'=>'loadProp($(this).val())',
                      'class' => 'form-control'
                  ]);
+
             ?>
                 <div class="help-block"></div>
             </div>
@@ -104,13 +129,33 @@ $this->registerJs($script, yii\web\View::POS_END);
         <div class="panel-footer">
             <div class="row">
 
+                <div class="col-md-8">
 
+                </div>
+                <div class="col-md-4">
+                    <div class="text-right" style="display: none" id="prices_field">
+                        <label>Цена</label>
+                        <?= $form->field($model, 'price_min')->widget(\yii\widgets\MaskedInput::className(), [
+                            'clientOptions' => [
+                                'alias' =>  'decimal',
+                                'groupSeparator' => ' ',
+                                'autoGroup' => true,
+                            ],
+                        ])->label(false) ?> -
+                        <?= $form->field($model, 'price_max')->widget(\yii\widgets\MaskedInput::className(), [
+                            'clientOptions' => [
+                                'alias' =>  'decimal',
+                                'groupSeparator' => ' ',
+                                'autoGroup' => true,
+                            ],
+                        ])->label(false) ?>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
-<?= $form->field($model, 'common_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'type_id')->hiddenInput()->label(false) ?>
+
 <?php ActiveForm::end(); ?>
 <?php
 //echo var_dump($model->properties);

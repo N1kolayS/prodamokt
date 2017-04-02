@@ -23,9 +23,21 @@ use yii\helpers\ArrayHelper;
 
 
 
-class Search extends Board
+class Search extends Model
 {
     public $common_id;
+    public $type_id;
+    public $town_id;
+    public $name;
+    public $price_min;
+    public $price_max;
+
+    public function beforeValidate() {
+        $this->price_min = intval(str_replace(' ', null, $this->price_min));
+        $this->price_max = intval(str_replace(' ', null, $this->price_max));
+
+        return parent::beforeValidate();
+    }
 
     /**
      * @inheritdoc
@@ -33,19 +45,17 @@ class Search extends Board
     public function rules()
     {
         return [
-            [['id',  'type_id', 'town_id', 'common_id', 'views', 'looks', 'enable', 'marked'], 'integer'],
-            [['name'], 'safe'],
-            [['cost'], 'number'],
+            [['id',  'type_id', 'town_id', 'common_id', ], 'integer'],
+            [['name'], 'string'],
+            [['price_min', 'price_max'], 'decimalNumber'],
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
+    public function decimalNumber($attribute)
     {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        if (!preg_match('/^[0-9]$/', $this->$attribute)) {
+            $this->addError($attribute, 'Только цифры');
+        }
     }
 
     /**
@@ -60,29 +70,32 @@ class Search extends Board
 
         $this->setAttributes($params);
 
+        $this->validate($params);
+
+        $query = Board::find();
+
+        $time = time();
+        $query->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=". Board::STATUS_ENABLE);
         if ($this->common_id)
         {
             $types = Type::find()->where(['common_id'=>$this->common_id])->asArray()->all();
-            //echo var_dump(ArrayHelper::getColumn($types, 'id'));
-            $query = Board::find()->where(['type_id' => ArrayHelper::getColumn($types, 'id')]);
+            $query->andFilterWhere(['type_id' =>ArrayHelper::getColumn($types, 'id') ]);
         }
-        else
-        {
-            $query = Board::find();
-        }
-        $time = time();
-        $query->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=1");
-
 
         // grid filtering conditions
         $query->andFilterWhere([
             'type_id' => $this->type_id,
             'town_id' => $this->town_id,
-            'cost' => $this->cost,
-
         ]);
 
         $query->andFilterWhere(['like', Board::tableName().'.name', $this->name]);
+
+        if (($this->price_max!=0)&&($this->price_min!=0))
+        {
+            $query->andFilterWhere(['>', 'cost', $this->price_min]);
+            $query->andFilterWhere(['<', 'cost', $this->price_max]);
+        }
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
