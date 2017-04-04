@@ -51,18 +51,19 @@ body {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
 .navbar-top {
     height: 75px;
     background: #f2f2f2;
 
 }
+
 .navbar-brand {
-    height: 70px;
+    max-height: 70px;
     padding-top: 5px;
     padding-bottom: 0;
 
 }
-
 .navbar-nav > li > a {
     font-family: 'Play', sans-serif;
     font-size: 15px;
@@ -71,6 +72,45 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     color: #4d4d4d;
+}
+@media screen and (max-device-width: 1200px) {
+    .img-brand {
+        width: 130px;
+        height: auto;
+    }
+    .navbar-nav > li > a {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-device-width: 1000px) {
+    .navbar-nav > li > a {
+        font-size: 10px;
+    }
+    .navbar-brand {
+        height: 50px;
+    }
+    .img-brand {
+        width: 130px;
+        height: auto;
+    }
+}
+@media screen and (max-device-width: 768px) {
+    .navbar-nav > li > a {
+        font-size: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+}
+.navbar-top .navbar-collapse  {
+    background-color: #f2f2f2;
+}
+.navbar-top .navbar-toggle {
+    border-color: #89e787;
+}
+.navbar-top .navbar-toggle .icon-bar {
+    background-color: #89e787;
 }
 .navbar-nav > li > a:focus,
 .navbar-nav > li > a:hover {
@@ -176,8 +216,13 @@ body {
     width: 250px;
 }
 /* Search */
+.field-search-name {
+    display: inline;
+    width: 100%;
+}
+
 .main-search .main-search-input {
-    width: 560px;
+    width: 100%;
 }
 .opt {
      text-transform: uppercase;
@@ -212,4 +257,11 @@ body {
     background: white;
     cursor: inherit;
     display: block;
+}
+
+/* ----- Promo ------ */
+@media screen and (max-device-width: 1000px) {
+    .promo-horizontal-900 {
+        display: none;
+    }
 }

@@ -31,7 +31,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => '<img src="/images/logo.png" >',
+        'brandLabel' => '<img src="/images/logo.png" class="img-brand" >',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-top  navbar-fixed-top',

@@ -89,41 +89,46 @@ $this->registerJs($script, yii\web\View::POS_END);
             <h2 class="panel-title text-center">Поиск Объявлений</h2>
         </div>
         <div class="panel-body">
-            <div class="form-group">
-            <?php
-            //echo var_dump(\common\models\Type::AllTypeSearch());
-            //Set Default
-            if ($model->common_id)
-            {
-                $default = 'common-'.$model->common_id;
-            }
-            else
-            {
-                $default = $model->type_id;
-            }
 
-             echo Html::dropDownList('name', $default, \common\models\Type::AllTypeSearch(),
-                 [
-                     'options' => \common\models\Type::AllTypeSearch(true),
-                     'prompt' => '- Тип Объявления -',
-                     'onchange'=>'loadProp($(this).val())',
-                     'class' => 'form-control'
-                 ]);
+                <div class="col-md-3">
+                    <?php
+                    //echo var_dump(\common\models\Type::AllTypeSearch());
+                    //Set Default
+                    if ($model->common_id)
+                    {
+                        $default = 'common-'.$model->common_id;
+                    }
+                    else
+                    {
+                        $default = $model->type_id;
+                    }
 
-            ?>
-                <div class="help-block"></div>
-            </div>
+                    echo Html::dropDownList('name', $default, \common\models\Type::AllTypeSearch(),
+                        [
+                            'options' => \common\models\Type::AllTypeSearch(true),
+                            'prompt' => '- Тип Объявления -',
+                            'onchange'=>'loadProp($(this).val())',
+                            'class' => 'form-control'
+                        ]);
 
-            <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...',  'class' => 'form-control main-search-input' ])->label(false) ?>
+                    ?>
+                    <div class="help-block"></div>
+                </div>
+                <div class="col-md-7">
+                    <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...',  'class' => 'form-control main-search-input' ])->label(false) ?>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary', ]) ?>
+                        <div class="help-block"></div>
+                    </div>
+                </div>
+
+
             <?php
              // echo $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false);
              ?>
 
-
-            <div class="form-group">
-                <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary', ]) ?>
-                <div class="help-block"></div>
-            </div>
 
         </div>
         <div class="panel-footer">
