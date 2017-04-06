@@ -265,3 +265,8 @@ body {
         display: none;
     }
 }
+
+.list-image
+{
+    cursor: pointer;
+}

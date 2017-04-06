@@ -19,24 +19,57 @@ $this->params['breadcrumbs'][] = ['label' => $model->type->name, 'url' => [
     'Search' =>['type_id' => $model->type_id,  'name'=> '',  'price_min' => '', 'price_max' => '']
 ]];
 $this->params['breadcrumbs'][] = $this->title;
+
+$script = <<< JS
+
+function loadimg(idimg)
+{
+        $("#MainImg").empty();
+        $("#MainImg").html('<img src="'+idimg+'" />');
+}
+
+JS;
+
+$this->registerJs($script, yii\web\View::POS_END);
+
 ?>
 <div class="board-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <?php
-            $image = $model->getImage();;
-            if ($image)
+
+            if ($model->existImages())
             {
-                echo Html::img($image->getUrl('400x'));
+                $image = $model->getImage();
+                echo '<div id="MainImg">'.Html::img($image->getUrl('450x'), ['class' => 'img-responsive']).'</div>';
+
+            }
+            ?>
+        </div>
+        <div class="col-md-2">
+            <?php
+            if ($model->existImages())
+            {
+                echo '<ul class="list-group list-image">';
+                foreach ($model->getImages() as $img)
+                {
+                    $big_img = $img->getUrl('450x');
+                    echo '<li class="list-group-item text-center">'.Html::img($img->getUrl('100x100'), [
+                            'class' => 'img-rounded',
+                            'onclick' => "loadimg('$big_img')"
+                        ]).'</li>';
+
+                }
+                echo '</ul>';
             }
 
             ?>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5">
             <p class="lead">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span></p>
             <p class="lead"> Продавец: <strong><?=$model->user->username?></strong></p>
             <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span> </p>

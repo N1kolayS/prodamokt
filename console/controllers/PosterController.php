@@ -13,6 +13,7 @@ use common\models\Board;
 use common\models\Vk;
 use Yii;
 use yii\console\Controller;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
 
@@ -37,8 +38,10 @@ class PosterController extends Controller {
                         $image = Yii::getAlias('@frontend/web/images/').'logo0.png';
                     }
                     //echo $board->name.PHP_EOL. $board->body. PHP_EOL;
+                    $text = StringHelper::truncateWords($board->body, 70, '...');
+                    $body =  $board->name.PHP_EOL.PHP_EOL. $text. PHP_EOL. PHP_EOL. 'Подробнее '. Url::to(['board/view', 'id'=>$board->id]);
                     $vkApi = new Vk(['access_token' => Yii::$app->params['vk.token']]);
-                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $board->name.PHP_EOL. $board->body. PHP_EOL. Url::to(['board/view', 'id'=>$board->id]), $image);
+                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $body, $image);
                     Board::updateAll(['post_vk' => time()], ['id' => $board->id]);
                 }
 

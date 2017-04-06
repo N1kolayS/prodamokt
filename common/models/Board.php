@@ -60,6 +60,7 @@ class Board extends \yii\db\ActiveRecord
         // Чистим от тегов входные данные
         $this->name = strip_tags($this->name);
         $this->body = strip_tags($this->body);
+        $this->cost = intval(str_replace(' ', null, $this->cost));
 
 
         return parent::beforeValidate();
@@ -83,7 +84,7 @@ class Board extends \yii\db\ActiveRecord
             [[ 'type_id', 'town_id',  'name', 'body'], 'required'],
             [['user_id', 'type_id', 'town_id', 'created_at', 'updated_at', 'finished_at', 'started_at', 'views', 'looks', 'enable', 'marked'], 'integer'],
             [['body'], 'string'],
-            [['cost'], 'number'],
+            [['cost'], 'decimalNumber'],
             [['name'], 'string', 'max' => 100],
             [['property'], 'safe'],
             [['town_id'], 'exist', 'skipOnError' => true, 'targetClass' => Town::className(), 'targetAttribute' => ['town_id' => 'id']],
@@ -91,6 +92,13 @@ class Board extends \yii\db\ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',  'maxFiles' => 4],
         ];
+    }
+
+    public function decimalNumber($attribute)
+    {
+        if (!preg_match('/^[\d\s]*$/', $this->$attribute)) {
+            $this->addError($attribute, 'Только цифры');
+        }
     }
 
     /**

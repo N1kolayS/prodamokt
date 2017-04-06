@@ -41,6 +41,14 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'pattern' => '/',
+                    'route' => 'site/index',
+                ],
+                '<action>'=>'site/<action>',
+
+                'board/view/<id:[\w-]+>' => 'board/view',
+
             ],
         ],
 

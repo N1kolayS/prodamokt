@@ -31,6 +31,11 @@ return [
             'baseUrl' => 'https://prodamokt.ru',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'rules' => [
+
+                'board/view/<id:[\w-]+>' => 'board/view',
+
+            ],
         ],
     ],
 

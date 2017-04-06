@@ -111,7 +111,13 @@ $this->registerJs($script, yii\web\View::POS_END);
             <?php
             if ($model->type->cost_name)
             {
-                echo $form->field($model, 'cost')->textInput(['maxlength' => true])->label($model->type->cost_name);
+                echo $form->field($model, 'cost')->widget(\yii\widgets\MaskedInput::className(), [
+                    'clientOptions' => [
+                        'alias' =>  'decimal',
+                        'groupSeparator' => ' ',
+                        'autoGroup' => true,
+                    ],
+                ])->label($model->type->cost_name);
             }
             ?>
 
