@@ -275,3 +275,9 @@ body {
     height: 500px;
     overflow: auto;
 }
+.social-text
+{
+    font-family: 'Play', sans-serif;
+    font-size: 16px;
+    color: #337ab7;
+}

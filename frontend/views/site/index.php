@@ -166,14 +166,14 @@ $this->registerJs($script, yii\web\View::POS_END);
 
     </div>
     <div class="row">
-        <div class="col-md-4 col-md-offset-3">
+        <div class="col-md-5 col-md-offset-2">
             <div class="panel">
                 <p>
                     <ul class="list-inline">
-                        <li><span class="label label-default"> Мы в социальных сетях:</span> </li>
+                        <li><span class="social-text"> Подписывайтесь в социальных сетях:</span> </li>
                         <li><?=Html::a(Html::img('/images/social-vk.png'), 'https://vk.com/prodamokt', ['target' => '_blank'])?></li>
-                        <li><?=Html::a(Html::img('/images/social-tweet.png'), 'https://www.instagram.com/prodamokt.ru/', ['target' => '_blank'])?></li>
-                        <li><?=Html::a(Html::img('/images/social-inst.png'), 'https://twitter.com/besplatnoobyavi', ['target' => '_blank'])?></li>
+                        <li><?=Html::a(Html::img('/images/social-tweet.png'), 'https://twitter.com/besplatnoobyavi', ['target' => '_blank'])?></li>
+                        <li><?=Html::a(Html::img('/images/social-inst.png'), 'https://www.instagram.com/prodamokt.ru/', ['target' => '_blank'])?></li>
                     </ul>
 
                 </p>
