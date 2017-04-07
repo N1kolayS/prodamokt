@@ -89,7 +89,7 @@ class BoardSearch extends Board
             'town_id' => $this->town_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'cost' => $this->cost,
+
             'views' => $this->views,
             'looks' => $this->looks,
             'enable' => $this->enable,

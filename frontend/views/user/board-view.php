@@ -111,23 +111,25 @@ $this->registerJs($script, yii\web\View::POS_END);
             ?>
         </div>
         <div class="col-md-2">
-            <?php
-            if ($model->existImages())
-            {
-                echo '<ul class="list-group list-image">';
-                foreach ($model->getImages() as $img)
+            <div class="scroll-img-list">
+                <?php
+                if ($model->existImages())
                 {
-                    $big_img = $img->getUrl('450x');
-                    echo '<li class="list-group-item text-center">'.Html::img($img->getUrl('100x100'), [
-                            'class' => 'img-rounded',
-                            'onclick' => "loadimg('$big_img')"
-                        ]).'</li>';
+                    echo '<ul class="list-group list-image">';
+                    foreach ($model->getImages() as $img)
+                    {
+                        $big_img = $img->getUrl('450x');
+                        echo '<li class="list-group-item text-center">'.Html::img($img->getUrl('100x100'), [
+                                'class' => 'img-rounded',
+                                'onclick' => "loadimg('$big_img')"
+                            ]).'</li>';
 
+                    }
+                    echo '</ul>';
                 }
-                echo '</ul>';
-            }
 
-            ?>
+                ?>
+            </div>
         </div>
         <div class="col-md-5">
             <p class="lead">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span></p>

@@ -31,6 +31,7 @@ class Search extends Model
     public $name;
     public $price_min;
     public $price_max;
+    public $property;
 
     public function beforeValidate() {
         $this->price_min = intval(str_replace(' ', null, $this->price_min));
@@ -47,6 +48,7 @@ class Search extends Model
         return [
             [['id',  'type_id', 'town_id', 'common_id', ], 'integer'],
             [['name'], 'string'],
+            [['property'], 'safe'],
             [['price_min', 'price_max'], 'decimalNumber'],
         ];
     }

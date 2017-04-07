@@ -90,6 +90,16 @@ class ModeList extends \yii\base\Object
      */
     public function Search()
     {
-        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
+
+        $data = Json::decode($this->value);
+        if (array_key_exists('prompt', $data)&&array_key_exists('list', $data))
+        {
+
+            $prompt = $data['prompt'] ? $this->name : '- Все варианты -';
+
+            return ['type' => 'list', 'prompt'=>$prompt, 'id'=>$this->id, 'list' => $data['list']];
+        }
+        else
+            return null;
     }
 }

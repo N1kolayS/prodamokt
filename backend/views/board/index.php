@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'updated_at',
              'name',
             // 'body:ntext',
-             'cost',
+         //    'cost',
              'views',
              'looks',
             // 'enable',

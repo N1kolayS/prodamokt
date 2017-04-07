@@ -13,7 +13,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use common\models\Property;
-$static_property = Property::MODE_RANGE;
+
 
 $properties_route = Url::toRoute('ajax/get-properties');
 
@@ -21,14 +21,18 @@ $script = <<< JS
     var input_filed;
     var price_filed = $("#prices_field");
     var type_id = $("#search-type_id");
+    var prop_field = $("#prop");
+    var prop_listing = $("#prop_listing");
+
     function loadProp(id) {
         $("#search-price_min").val('');
         $("#search-price_max").val('');
-        price_filed.hide();
+        prop_field.hide();
+        prop_listing.empty();
         // Выбран общий тип или конкретная категория
         if (id.indexOf('common') >= 0)
         {
-            //var common_id  = id.split('-')[1];
+
             $("#search-type_id").val('');
             $("#search-common_id").val(id.split('-')[1]);
 
@@ -38,24 +42,47 @@ $script = <<< JS
             $("#search-type_id").val(id);
             $("#search-common_id").val('');
             // Load Property
+            /*
             $.get( "$properties_route", { id: id } )
             .done(function( json )
             {
 
                 var result = JSON.parse(json);
-                if (result.price != "")
+                if (result.property.length != 0)
                 {
-                    $( price_filed ).find( "label" ).html(result.price);
-                    price_filed.show();
-                }
-                $.each(result.property, function() {
-                    if (this.mode==" 1")
+                    prop_field.show();
+                    if (result.price != "")
                     {
+                        $( price_filed ).find( "label" ).html(result.price);
 
                     }
-                });
+                    $.each(result.property, function() {
+
+                        if (this.val.type == 'list')
+                        {
+                            html_append = '<select class="form-control" name=Search[property]['+ this.val.id +']>';
+                            html_append += '<option value="">'+this.val.prompt +'</option>';
+                            $.each(this.val.list, function() {
+                                if (get_property[this.val.id]==this)
+                                {
+                                    html_append += '<option selected value="'+this +'">'+this +'</option>';
+                                }
+                                else
+                                {
+                                    html_append += '<option value="'+this +'">'+this +'</option>';
+                                }
+
+
+                            });
+                            html_append += '</select>';
+                        }
+                        prop_listing.append(html_append+' &nbsp;&nbsp; ');
+                    });
+
+                }
 
             });
+            */
         }
 
     }
@@ -73,7 +100,7 @@ $script = <<< JS
 
 JS;
 $this->registerJs($script, yii\web\View::POS_END);
-#*/
+//echo var_dump($model->property);
 ?>
 <?php $form = ActiveForm::begin( [
     'action' => ['board/index'],
@@ -132,7 +159,31 @@ $this->registerJs($script, yii\web\View::POS_END);
 
         </div>
         <div class="panel-footer">
+            <div class="row" id="prop" style="display: none">
 
+                <div class="col-md-8" id="prop_listing">
+
+                </div>
+                <div class="col-md-4">
+                    <div class="text-right" id="prices_field">
+                        <label>Цена</label>
+                        <?= $form->field($model, 'price_min')->widget(\yii\widgets\MaskedInput::className(), [
+                            'clientOptions' => [
+                                'alias' =>  'decimal',
+                                'groupSeparator' => ' ',
+                                'autoGroup' => true,
+                            ],
+                        ])->label(false) ?> -
+                        <?= $form->field($model, 'price_max')->widget(\yii\widgets\MaskedInput::className(), [
+                            'clientOptions' => [
+                                'alias' =>  'decimal',
+                                'groupSeparator' => ' ',
+                                'autoGroup' => true,
+                            ],
+                        ])->label(false) ?>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
