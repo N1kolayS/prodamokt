@@ -72,22 +72,26 @@ $this->registerJs($script, yii\web\View::POS_END);
         </div>
 
         <div class="col-md-5">
-            <p class="lead">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span></p>
+            <?php if ($model->getPrice()) {
+                echo '<p class="lead">'.$model->price['name'].': <span class="label label-success">'.$model->price['cost'].'</span></p>';
+            } ?>
             <p class="lead"> Продавец: <strong><?=$model->user->username?></strong></p>
             <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span> </p>
+            <p class="lead"> <span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
 
             <hr />
+
             <p><?=nl2br(Html::encode($model->body))?></p>
             <table class="table table-striped table-condensed">
                 <?php
-                foreach ($model->boardProperties as $property)
+                foreach ($properties as $property)
                 {
-                    if (!empty($property->value))
+                    if (!empty($model->getValue($property->number)))
                     {
                         ?>
                         <tr>
-                            <td><?=$property->property->name?></td>
-                            <td><?=$property->value?></td>
+                            <td><?=$property->name?></td>
+                            <td><?=$model->getValue($property->number)?></td>
                         </tr>
                         <?php
                     }
@@ -99,3 +103,4 @@ $this->registerJs($script, yii\web\View::POS_END);
     </div>
 
 </div>
+

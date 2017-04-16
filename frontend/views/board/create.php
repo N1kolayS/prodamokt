@@ -101,7 +101,7 @@ $this->registerJs($script, yii\web\View::POS_END);
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'type_id')->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'town_id')->hiddenInput()->label(false) ?>
+
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -121,11 +121,10 @@ $this->registerJs($script, yii\web\View::POS_END);
             }
             ?>
 
-            <?php
-            //$form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -'])
-            ?>
+
         </div>
         <div class="col-md-6">
+            <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -']) ?>
             <?php
             foreach ($property_list as $property)
             {

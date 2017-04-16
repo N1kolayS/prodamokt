@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 use common\models\Board;
+use common\models\Property;
 use common\models\User;
 use frontend\models\ChangePasswordForm;
 use frontend\models\SearchMy;
@@ -163,6 +164,7 @@ class UserController extends Controller
 
         return $this->render('board-view', [
             'model' => $model,
+            'properties' => Property::find()->where(['type_id' => $model->type_id])->orderBy('number')->all(),
         ]);
     }
 
@@ -242,6 +244,7 @@ class UserController extends Controller
         } else {
             return $this->render('board-update', [
                 'model' => $model,
+                'properties' => Property::find()->where(['type_id' => $model->type_id])->orderBy('number')->all(),
             ]);
         }
     }

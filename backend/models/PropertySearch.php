@@ -21,7 +21,7 @@ class PropertySearch extends Property
     public function rules()
     {
         return [
-            [['id', 'type_id', 'mode', 'sort'], 'integer'],
+            [['id', 'type_id', 'mode', 'number'], 'integer'],
             [['name', 'modelName', 'value', 'type'], 'safe'],
         ];
     }
@@ -72,7 +72,7 @@ class PropertySearch extends Property
             'id' => $this->id,
             'type_id' => $this->type_id,
             'mode' => $this->mode,
-            'sort' => $this->sort,
+            'number' => $this->number,
         ]);
 
         $query->andFilterWhere(['like', Property::tableName().'.name', $this->name])

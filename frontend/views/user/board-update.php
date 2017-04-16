@@ -103,7 +103,7 @@ $this->registerJs($script, yii\web\View::POS_END);
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'type_id')->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'town_id')->hiddenInput()->label(false) ?>
+
     <div class="row">
         <div class="col-md-6">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
@@ -123,21 +123,19 @@ $this->registerJs($script, yii\web\View::POS_END);
             }
             ?>
 
-            <?php
-            //$form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -'])
-            ?>
+
         </div>
         <div class="col-md-6">
+            <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Выберите город -']) ?>
             <?php
 
-            foreach ($model->properties as $property)
+            foreach ($properties as $property)
             {
-                $property_values = ArrayHelper::map($model->boardProperties, 'property_id', 'value');
 
                 ?>
                 <div class="form-group">
-                    <label class="control-label" for="property-<?= $property->id ?>"><?= $property->name ?></label>
-                    <?= $property->generateMode->update($property_values[$property->id]) ?>
+                    <label class="control-label" for="property-<?= $property->number ?>"><?= $property->name ?></label>
+                    <?= $property->generateMode->update($model->getValue($property->number)) ?>
                 </div>
                 <?php
 

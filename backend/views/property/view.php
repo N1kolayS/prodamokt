@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'mode',
             'modelName',
             'value',
-            'sort',
+            'number',
         ],
     ]) ?>
 <hr />

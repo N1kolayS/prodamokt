@@ -79,9 +79,13 @@ $this->registerJs($script, yii\web\View::POS_END);
             <h3 class="panel-title text-center" id="heading">Объявление активно</h3>
         </div>
         <div class="panel-body">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <p><?php if ($model->isStarted()) { echo 'Опубликовано: <strong>'. Yii::$app->formatter->asDate($model->started_at, "php: d M H:i ").'</strong>'; } else { echo 'Активируется через: <strong>'. intval(($model->started_at-time())/60).'</strong> минут'; }  ?>  </p>
                 <p><?php if ($model->isFinished()) { echo 'Истекло'; } else { echo 'Истекает: <strong>'. Yii::$app->formatter->asDate($model->finished_at, "php: d M H:i ").'</strong>'; } ?></p>
+
+            </div>
+            <div class="col-md-2">
+                <p>Просмотры <span class="glyphicon glyphicon-eye-open"></span> <?=$model->views?> </p>
             </div>
             <div class="col-md-6 text-right">
                 <?=Html::a('<span class="glyphicon glyphicon-pencil"></span> Редактировать', ['user/board-update', 'id'=> $model->id], ['class' => 'btn btn-info'])?>
@@ -132,24 +136,27 @@ $this->registerJs($script, yii\web\View::POS_END);
             </div>
         </div>
         <div class="col-md-5">
-            <p class="lead">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span></p>
+            <?php if ($model->getPrice()) {
+                echo '<p class="lead">'.$model->price['name'].': <span class="label label-success">'.$model->price['cost'].'</span></p>';
+            } ?>
             <p class="lead"> Продавец: <strong><?=$model->user->username?></strong></p>
             <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span>
 
             </p>
-            <p> <span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
+
+            <p class="lead"> <span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
             <hr />
             <p><?=nl2br(Html::encode($model->body))?></p>
             <table class="table table-striped table-condensed">
                 <?php
-                foreach ($model->boardProperties as $property)
+                foreach ($properties as $property)
                 {
-                    if (!empty($property->value))
+                    if (!empty($model->getValue($property->number)))
                     {
                         ?>
                         <tr>
-                            <td><?=$property->property->name?></td>
-                            <td><?=$property->value?></td>
+                            <td><?=$property->name?></td>
+                            <td><?=$model->getValue($property->number)?></td>
                         </tr>
                         <?php
                     }

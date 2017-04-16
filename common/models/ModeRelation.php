@@ -14,17 +14,19 @@ class ModeRelation extends \yii\base\Object
     private $id;
     private $name;
     private $value;
+    private $number;
 
-    public function __construct($id, $name, $value)
+    public function __construct($id, $name, $value, $number)
     {
         $this->id = $id;
         $this->name = $name;
         $this->value = $value;
+        $this->number = $number;
     }
 
     public function Create()
     {
-        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+        $input = '<select  class="form-control" name="Board[property]['. $this->number .']">';
         foreach (explode(';', $this->value) as $value)
         {
             if (trim($value)=='0')
@@ -41,7 +43,7 @@ class ModeRelation extends \yii\base\Object
 
     public function Update($val)
     {
-        $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+        $input = '<select  class="form-control" name="Board[property]['. $this->number .']">';
         foreach (explode(';', $this->value) as $value)
         {
             if (trim($value)=='0')
@@ -70,6 +72,6 @@ class ModeRelation extends \yii\base\Object
      */
     public function Search()
     {
-        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
+        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->number .']" type="text">';
     }
 }

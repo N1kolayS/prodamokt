@@ -34,8 +34,8 @@ class Search extends Model
     public $property;
 
     public function beforeValidate() {
-        $this->price_min = intval(str_replace(' ', null, $this->price_min));
-        $this->price_max = intval(str_replace(' ', null, $this->price_max));
+        $this->price_min = str_replace(' ', null, $this->price_min);
+        $this->price_max = str_replace(' ', null, $this->price_max);
 
         return parent::beforeValidate();
     }
@@ -46,19 +46,14 @@ class Search extends Model
     public function rules()
     {
         return [
-            [['id',  'type_id', 'town_id', 'common_id', ], 'integer'],
+            [['type_id', 'town_id', 'common_id', ], 'integer'],
             [['name'], 'string'],
             [['property'], 'safe'],
-            [['price_min', 'price_max'], 'decimalNumber'],
+            [['price_min', 'price_max'], 'string'],
         ];
     }
 
-    public function decimalNumber($attribute)
-    {
-        if (!preg_match('/^[0-9]$/', $this->$attribute)) {
-            $this->addError($attribute, 'Только цифры');
-        }
-    }
+
 
     /**
      * Creates data provider instance with search query applied
@@ -70,18 +65,53 @@ class Search extends Model
     public function search($params)
     {
 
-        $this->setAttributes($params);
-
-        $this->validate($params);
-
         $query = Board::find();
+
 
         $time = time();
         $query->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=". Board::STATUS_ENABLE);
+
+
+        $this->load($params);
+
+        if (!$this->validate())
+        {
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+                'sort' => [
+                    'defaultOrder' => [
+                        'started_at' => SORT_DESC,
+
+                    ]
+                ],
+            ]);
+
+            return $dataProvider;
+        }
+
+
+
+
         if ($this->common_id)
         {
             $types = Type::find()->where(['common_id'=>$this->common_id])->asArray()->all();
             $query->andFilterWhere(['type_id' =>ArrayHelper::getColumn($types, 'id') ]);
+        }
+        // Property search
+        if ($this->property)
+        {
+
+
+            foreach ($this->property as $key => $value)
+            {
+                if ($value!='')
+                {
+                    $query->andFilterWhere(['like', 'value'.$key, $value]);
+                }
+            }
         }
 
         // grid filtering conditions
@@ -92,11 +122,17 @@ class Search extends Model
 
         $query->andFilterWhere(['like', Board::tableName().'.name', $this->name]);
 
-        if (($this->price_max!=0)&&($this->price_min!=0))
+        if ($this->price_min!=0)
         {
-            $query->andFilterWhere(['>', 'cost', $this->price_min]);
-            $query->andFilterWhere(['<', 'cost', $this->price_max]);
+            $query->andFilterWhere(['>=', 'cost', $this->price_min]);
         }
+
+        if ($this->price_max!=0)
+        {
+            $query->andFilterWhere(['<=', 'cost', $this->price_max]);
+
+        }
+
 
 
         $dataProvider = new ActiveDataProvider([
@@ -113,6 +149,24 @@ class Search extends Model
         ]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @return string
+     */
+    public function propertyToJs()
+    {
+        $array_js_property = '{}';
+        if ($this->property)
+        {
+            $array_js_property = '{';
+            foreach ($this->property as $key => $value)
+            {
+                $array_js_property .= $key.': "'. $value. '",';
+            }
+            $array_js_property .= '}';
+        }
+        return $array_js_property;
     }
 }
 

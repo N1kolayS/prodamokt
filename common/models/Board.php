@@ -23,16 +23,23 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $enable
  * @property integer $marked
  * @property integer $started_at
+ * @property string $value1
+ * @property string $value2
+ * @property string $value3
+ * @property string $value4
+ * @property string $value5
+ * @property string $value6
+ * @property string $value7
+ * @property string $value8
  *
  * @property Town $town
  * @property Type $type
  * @property User $user
- * @property BoardProperty[] $boardProperties
- * @property Property[] $properties
  *
  * @property array $property
  * @property string $images
  */
+
 class Board extends \yii\db\ActiveRecord
 {
     public $property;
@@ -86,11 +93,12 @@ class Board extends \yii\db\ActiveRecord
             [['body'], 'string'],
             [['cost'], 'decimalNumber'],
             [['name'], 'string', 'max' => 100],
+            [['value1', 'value2' ,'value3', 'value4', 'value5', 'value6', 'value7', 'value8'], 'string', 'max' => 255],
             [['property'], 'safe'],
             [['town_id'], 'exist', 'skipOnError' => true, 'targetClass' => Town::className(), 'targetAttribute' => ['town_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['type_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['images' ], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',  'maxFiles' => 4],
+
         ];
     }
 
@@ -152,21 +160,6 @@ class Board extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getBoardProperties()
-    {
-        return $this->hasMany(BoardProperty::className(), ['board_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProperties()
-    {
-        return $this->hasMany(Property::className(), ['id' => 'property_id'])->viaTable('{{%board_property}}', ['board_id' => 'id']);
-    }
 
     /**
      * Check exist image
@@ -258,13 +251,23 @@ class Board extends \yii\db\ActiveRecord
         return false;
     }
 
+    /**
+     * @return array|bool
+     * @throws \yii\base\InvalidConfigException
+     */
     public function getPrice()
     {
         if (!empty($this->type->cost_name))
         {
-            $cost = 'Не указано';
-            if (!empty($this->cost))
+
+            if ((empty($this->cost))or(intval($this->cost)==0))
+            {
+                $cost = 'Не указано';
+            }
+            else
+            {
                 $cost = Yii::$app->formatter->asCurrency($this->cost);
+            }
 
             return ['name' => $this->type->cost_name, 'cost' => $cost];
         }
@@ -296,6 +299,83 @@ class Board extends \yii\db\ActiveRecord
     }
 
     /**
+     * Обновление просмотров
+     */
+    public function updateView()
+    {
+        self::updateCounters(['views'=>1]);
+    }
+
+
+    /**
+     * @param $i
+     * @param $value
+     */
+    private function setValue($i, $value)
+    {
+        switch ($i) {
+            case 1:
+                $this->value1 = $value;
+                break;
+            case 2:
+                $this->value2 = $value;
+                break;
+            case 3:
+                $this->value3 = $value;
+                break;
+            case 4:
+                $this->value4 = $value;
+                break;
+            case 5:
+                $this->value5 = $value;
+                break;
+            case 6:
+                $this->value6 = $value;
+                break;
+            case 7:
+                $this->value7 = $value;
+                break;
+            case 8:
+                $this->value8 = $value;
+                break;
+        }
+    }
+
+    /**
+     * @param $i
+     * @return string
+     */
+    public function getValue($i)
+    {
+        switch ($i) {
+            case 1:
+                return $this->value1;
+                break;
+            case 2:
+                return $this->value2;
+                break;
+            case 3:
+                return $this->value3;
+                break;
+            case 4:
+                return $this->value4;
+                break;
+            case 5:
+                return $this->value5;
+                break;
+            case 6:
+                return $this->value6;
+                break;
+            case 7:
+                return $this->value7;
+                break;
+            case 8:
+                return $this->value8;
+                break;
+        }
+    }
+
+    /**
      * Превращение цены в INT
      * @todo Сделать по нормальному
      * Установка времени старта и финиша
@@ -315,41 +395,24 @@ class Board extends \yii\db\ActiveRecord
                 $this->finished_at = $this->created_at + Yii::$app->params['board.lifetime'];
                 $this->started_at  = $this->created_at + Yii::$app->params['board.delay'];
             }
+
+
+            if ($this->property)
+            {
+
+                foreach ($this->property as $key=>$prop)
+                {
+                    $this->setValue($key,  strip_tags($prop));
+
+                }
+            }
+
             return true;
         }
 
         return false;
     }
 
-    /**
-     * Установка атрибутов для свойств
-     * @param bool $insert
-     * @param array $changedAttributes
-     */
-    public function afterSave ($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-            if ((!$insert)and($this->property)) // Check update record and Property exist
-            {
-                // Удаляем все значения свойств
-                BoardProperty::deleteAll(['board_id' => $this->id]);
-            }
-
-            if ($this->property)
-            {
-                // Save
-                foreach ($this->property as $key=>$prop)
-                {
-                    $model_prop = new BoardProperty();
-                    $model_prop->board_id = $this->id;
-                    $model_prop->property_id = $key;
-                    $model_prop->value = strip_tags($prop);
-                    $model_prop->save();
-                }
-            }
-
-    }
 
     /**
      * @return bool
@@ -358,16 +421,11 @@ class Board extends \yii\db\ActiveRecord
     {
         if (parent::beforeDelete())
         {
-            BoardProperty::deleteAll(['board_id' => $this->id]);
+
             $this->removeImages();
             return true;
         }
         return false;
     }
 
-
-    public function pubVk()
-    {
-        return true;
-    }
 }

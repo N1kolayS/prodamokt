@@ -63,9 +63,8 @@ class BoardController extends Controller
     public function actionIndex()
     {
         $model = new Search();
-        $dataProvider = $model->search(Yii::$app->request->getQueryParam('Search'));
-        $model->price_min = '';
-        $model->price_max = '';
+        $dataProvider = $model->search(Yii::$app->request->get());
+
         return $this->render('index', [
             'model' => $model,
             'dataProvider' => $dataProvider,
@@ -76,8 +75,10 @@ class BoardController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        $model->updateView();
         return $this->render('view', [
             'model' => $model,
+            'properties' => Property::find()->where(['type_id' => $model->type_id])->orderBy('number')->all(),
         ]);
 
     }
@@ -100,7 +101,7 @@ class BoardController extends Controller
 
     /**
      * Displays second step for create Ad
-     *
+     * @param integer $id
      * @return mixed
      */
     public function actionCreate($id)
@@ -112,14 +113,12 @@ class BoardController extends Controller
 
         $model = new Board();
         $model->type_id = $type_id;
-        $model->town_id  = Town::findOne(['default' => Town::DEFAULT_YES]);
 
-        $property_list = Property::find()->where(['type_id'=> $type_id])->all();
+        $property_list = Property::find()->where(['type_id'=> $type_id])->orderBy('number')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
             $model->images = UploadedFile::getInstances($model, 'images');
-           // echo var_dump($model->images);
-           // die();
+
             $scan_dir = Board::scanDirImages();
             if ($scan_dir)
             {

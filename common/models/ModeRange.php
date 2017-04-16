@@ -15,12 +15,14 @@ class ModeRange extends \yii\base\Object
     private $id;
     private $name;
     private $value;
+    private $number;
 
-    public function __construct($id, $name, $value)
+    public function __construct($id, $name, $value, $number)
     {
         $this->id = $id;
         $this->name = $name;
         $this->value = $value;
+        $this->number = $number;
     }
 
     public function Create()
@@ -28,7 +30,7 @@ class ModeRange extends \yii\base\Object
         $data = Json::decode($this->value);
         if (array_key_exists('prompt', $data)&&array_key_exists('start', $data)&&array_key_exists('stop', $data)&&array_key_exists('step', $data))
         {
-            $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+            $input = '<select  class="form-control" name="Board[property]['. $this->number .']">';
             if ($data['prompt'])
             {
                 $input = $input. '<option value=""> - '. $data['prompt'] .' - </option>';
@@ -49,7 +51,7 @@ class ModeRange extends \yii\base\Object
         $data = Json::decode($this->value);
         if (array_key_exists('prompt', $data)&&array_key_exists('start', $data)&&array_key_exists('stop', $data)&&array_key_exists('step', $data))
         {
-            $input = '<select  class="form-control" name="Board[property]['. $this->id .']">';
+            $input = '<select  class="form-control" name="Board[property]['. $this->number .']">';
             if ($data['prompt'])
             {
                 $select_prompt = '';
@@ -84,6 +86,6 @@ class ModeRange extends \yii\base\Object
      */
     public function Search()
     {
-        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->id .']" type="text">';
+        return '<input id="property-'.$this->id .'" class="form-control" name="Board[property]['.$this->number .']" type="text">';
     }
 }

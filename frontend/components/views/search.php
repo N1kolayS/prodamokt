@@ -12,10 +12,11 @@
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-use common\models\Property;
 
 
 $properties_route = Url::toRoute('ajax/get-properties');
+$array_js_property = $model->propertyToJs();
+
 
 $script = <<< JS
     var input_filed;
@@ -23,12 +24,18 @@ $script = <<< JS
     var type_id = $("#search-type_id");
     var prop_field = $("#prop");
     var prop_listing = $("#prop_listing");
+    var array_property = $array_js_property;
+    var html_append;
 
-    function loadProp(id) {
-        $("#search-price_min").val('');
-        $("#search-price_max").val('');
+
+    function loadProp(id, reset) {
+
         prop_field.hide();
         prop_listing.empty();
+        if (reset) {
+            $("#search-price_min").val('');
+            $("#search-price_max").val('');
+        }
         // Выбран общий тип или конкретная категория
         if (id.indexOf('common') >= 0)
         {
@@ -42,7 +49,7 @@ $script = <<< JS
             $("#search-type_id").val(id);
             $("#search-common_id").val('');
             // Load Property
-            /*
+
             $.get( "$properties_route", { id: id } )
             .done(function( json )
             {
@@ -50,20 +57,22 @@ $script = <<< JS
                 var result = JSON.parse(json);
                 if (result.property.length != 0)
                 {
-                    prop_field.show();
+                    prop_field.show(200);
                     if (result.price != "")
                     {
                         $( price_filed ).find( "label" ).html(result.price);
 
                     }
                     $.each(result.property, function() {
-
+                        html_append = '';
                         if (this.val.type == 'list')
                         {
-                            html_append = '<select class="form-control" name=Search[property]['+ this.val.id +']>';
+                            val_id_get = this.val.number;
+                            html_append = '<select class="form-control" name=Search[property]['+ val_id_get +']>';
+
                             html_append += '<option value="">'+this.val.prompt +'</option>';
                             $.each(this.val.list, function() {
-                                if (get_property[this.val.id]==this)
+                                if (array_property[val_id_get]==this)
                                 {
                                     html_append += '<option selected value="'+this +'">'+this +'</option>';
                                 }
@@ -71,6 +80,9 @@ $script = <<< JS
                                 {
                                     html_append += '<option value="'+this +'">'+this +'</option>';
                                 }
+
+
+
 
 
                             });
@@ -82,7 +94,7 @@ $script = <<< JS
                 }
 
             });
-            */
+
         }
 
     }
@@ -91,7 +103,7 @@ $script = <<< JS
 
         if (type_id.val()!='')
         {
-            loadProp(type_id.val());
+            loadProp(type_id.val(), false);
         }
 
 
@@ -134,27 +146,29 @@ $this->registerJs($script, yii\web\View::POS_END);
                         [
                             'options' => \common\models\Type::AllTypeSearch(true),
                             'prompt' => '- Тип Объявления -',
-                            'onchange'=>'loadProp($(this).val())',
+                            'onchange'=>'loadProp($(this).val(), true)',
                             'class' => 'form-control'
                         ]);
 
                     ?>
                     <div class="help-block"></div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-5">
                     <?= $form->field($model, 'name')->textInput(['placeholder' => 'Я ищу...',  'class' => 'form-control main-search-input' ])->label(false) ?>
                 </div>
                 <div class="col-md-2">
+                    <?= $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false); ?>
+                </div>
+                <div class="col-md-2">
+
                     <div class="form-group">
-                        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary', ]) ?>
+                        <?= Html::submitButton('<span class="glyphicon glyphicon-search"></span> Найти!', ['class' => 'btn btn-primary btn-block', ]) ?>
                         <div class="help-block"></div>
                     </div>
                 </div>
 
 
-            <?php
-             // echo $form->field($model, 'town_id')->dropDownList(\common\models\Town::OptAllTowns(), ['prompt' => '- Во всех городах -', ])->label(false);
-             ?>
+
 
 
         </div>

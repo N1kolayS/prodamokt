@@ -27,10 +27,14 @@ use yii\bootstrap\Html;
         </p>
         <div class="media-body">
             <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small> </h4>
+            <p class="text-muted"> <span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
 
             <br />
-            <p class="list-group-item-text">Цена: <span class="label label-success"><?php if ($model->cost) echo Yii::$app->formatter->asCurrency($model->cost); else echo 'Не указана'; ?></span> </p>
-            <p class="text-muted pull-right">Опубликовано: <strong><?= Yii::$app->formatter->asDate($model->created_at, "php: d M H:i ") ?></strong> </p>
+            <?php if ($model->getPrice()) {
+                echo '<p class="list-group-item-text">'.$model->price['name'].': <span class="label label-success">'.$model->price['cost'].'</span></p>';
+            } ?>
+
+            <p class="text-muted pull-right">Опубликовано: <strong><?= Yii::$app->formatter->asDate($model->started_at, "php: d M H:i ") ?></strong> </p>
         </div>
     </div>
 </a>

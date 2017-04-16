@@ -38,8 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $mode[$data->mode];
                 },
             ],
-            'modelName',
-            'value',
+            //'modelName',
+            'number',
             // 'sort',
 
             ['class' => 'yii\grid\ActionColumn'],

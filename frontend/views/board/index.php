@@ -8,20 +8,23 @@
 
 ?>
 
+<div class="row">
+    <div class="col-md-12">
+        <?php
+        // Вывод виджета поиска
+        echo \app\components\SearchWidget::widget([
+            'model' => $model,
+        ]);
+        ?>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-1">
 
     </div>
     <div class="col-md-10">
-        <?php
-        // Вывод виджета поиска
-            echo \app\components\SearchWidget::widget([
-                'model' => $model,
 
-            ]);
-
-        ?>
         <div class="promo-horizontal-900 text-center">
             <?=\yii\helpers\Html::a('<img src="/promo/club85420699.gif" alt="Всё для девушек"  height="100" width="900" >', 'https://vk.com/club85420699', ['target'=>'_blank'])?>
         </div>

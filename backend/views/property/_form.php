@@ -61,7 +61,7 @@ if ($model->isNewRecord)
 
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'sort')->textInput() ?>
+            <?= $form->field($model, 'number')->dropDownList($model::ListNumber(),  ['prompt'=>'-Номер свойства-']) ?>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'mode')->dropDownList($model::ListMode(), ['prompt' => '- Режим значения -',  'onchange'=>'loadProp($(this).val())']) ?>

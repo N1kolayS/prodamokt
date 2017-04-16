@@ -55,7 +55,7 @@ class AjaxController extends Controller {
             $type = Type::findOne($id);
 
             $prop = [];
-            $properties =  Property::find()->where(['type_id' => $id])->all();
+            $properties =  Property::find()->where(['type_id' => $id])->orderBy('number')->all();
 
 
 
