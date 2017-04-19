@@ -21,7 +21,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title>Объявления Октябрьский Туймазы. Продать, купить, авто, недвижимость, работа, товары - <?= Html::encode($this->title) ?></title>
+    <title>Бесплатные Объявления. Продать, купить, авто, недвижимость, работа, товары - <?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <link href="https://fonts.googleapis.com/css?family=Play" rel="stylesheet">
 </head>

@@ -107,7 +107,8 @@ class Search extends Model
 
             foreach ($this->property as $key => $value)
             {
-                if ($value!='')
+                //$key = intval($key);
+                if ($value!="")
                 {
                     $query->andFilterWhere(['like', 'value'.$key, $value]);
                 }

@@ -170,7 +170,7 @@ $this->registerJs($script, yii\web\View::POS_END);
             <div class="panel">
                 <p>
                     <ul class="list-inline">
-                        <li><span class="label label-info"> Подписывайтесь в социальных сетях:</span> </li>
+                        <li><span class="label label-info label-soc"> Подписывайтесь в соцсетях:</span> </li>
                         <li><?=Html::a(Html::img('/images/social-vk.png'), Yii::$app->params['social.vk'], ['target' => '_blank'])?></li>
                         <li><?=Html::a(Html::img('/images/social-tweet.png'), Yii::$app->params['social.tweet'], ['target' => '_blank'])?></li>
                         <li><?=Html::a(Html::img('/images/social-inst.png'), Yii::$app->params['social.inst'], ['target' => '_blank'])?></li>
