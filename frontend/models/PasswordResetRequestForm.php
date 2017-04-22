@@ -10,8 +10,13 @@ use common\models\User;
  */
 class PasswordResetRequestForm extends Model
 {
-    public $email;
+    public $phone;
+    public $verifyCode;
 
+    public function beforeValidate() {
+        $this->phone = str_replace('-', null, $this->phone);
+        return parent::beforeValidate();
+    }
 
     /**
      * @inheritdoc
@@ -19,15 +24,37 @@ class PasswordResetRequestForm extends Model
     public function rules()
     {
         return [
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'exist',
+
+            ['phone', 'required'],
+            ['phone', 'is10NumbersOnly'],
+            ['phone', 'exist',
                 'targetClass' => '\common\models\User',
                 'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'There is no user with this email address.'
+                'message' => 'Пользователь с данным номером телефона не найден.'
             ],
+            ['verifyCode', 'captcha'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'phone' => 'Телефон',
+            'verifyCode' => 'Введите код с картинки',
+        ];
+    }
+
+    /**
+     * @param $attribute
+     */
+    public function is10NumbersOnly($attribute)
+    {
+        if (!preg_match('/^[0-9]{10}$/', $this->$attribute)) {
+            $this->addError($attribute, 'Телефон должен состоять из 10 цифр');
+        }
     }
 
     /**
@@ -35,34 +62,24 @@ class PasswordResetRequestForm extends Model
      *
      * @return bool whether the email was send
      */
-    public function sendEmail()
+    public function sendSms()
     {
         /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
+            'phone' => $this->phone,
         ]);
 
         if (!$user) {
             return false;
         }
-        
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
-            }
+
+        $user->generateSmsResetToken();
+
+        if (!$user->save()) {
+            return false;
         }
 
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
+        return $user->SendResetSms();
     }
 }

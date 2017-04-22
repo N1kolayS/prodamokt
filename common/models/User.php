@@ -24,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property string $password write-only password
  * @property string $role
  * @property string $sms_code_activate
+ * @property string $sms_reset_token
  *
  * @property Board[] $boards
  *
@@ -123,6 +124,7 @@ class User extends ActiveRecord implements IdentityInterface
             'agent' => 'Агентство',
             'status' => 'Статус пользователя',
             'sms_code_activate' => 'Код активации',
+            'sms_reset_token' => 'Код сброса пароля',
         ];
     }
 
@@ -187,6 +189,21 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+
+    /**
+     * Finds user by sms reset token
+     * @author Nikolay
+     * @param $token
+     * @return static
+     */
+    public static function findBySmsResetToken($token)
+    {
+        return static::findOne([
+           'sms_reset_token' => $token,
             'status' => self::STATUS_ACTIVE,
         ]);
     }
@@ -279,6 +296,25 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * @author Nikolay
+     */
+    public function generateSmsResetToken()
+    {
+        $this->sms_reset_token = mt_rand(1,9).mt_rand(1,9).mt_rand(1,9).mt_rand(1,9).mt_rand(1,9).mt_rand(1,9);
+    }
+
+
+
+    /**
+     * @author Nikolay
+     *  Remove sms reset token
+     */
+    public function removeSmsResetToken()
+    {
+        $this->sms_reset_token = null;
+    }
+
+    /**
+     * @author Nikolay
      * Generate SMS code
      */
     public function generateSmsCode()
@@ -304,9 +340,27 @@ class User extends ActiveRecord implements IdentityInterface
             file_put_contents($file, $this->sms_code_activate.PHP_EOL);
         }
 
-        /* Uncomment for Real Send Sms
+    }
 
-        #*/
+    /**
+     * @author Nikolay, Usage library Zelenin
+     * @throws \Zelenin\SmsRu\Exception\Exception
+     */
+    public function SendResetSms()
+    {
+        if (YII_ENV_PROD)
+        {
+            $client = new \Zelenin\SmsRu\Api(new \Zelenin\SmsRu\Auth\ApiIdAuth(Yii::$app->params['sms.ru.api_id']));
+            $sms = new \Zelenin\SmsRu\Entity\Sms('7'.$this->phone, 'Код сброса: '. $this->sms_reset_token);
+            $client->smsSend($sms);
+        }
+        else
+        {
+            $file = '/home/nikolay/sms-reset.txt';
+            file_put_contents($file, $this->sms_reset_token.PHP_EOL);
+        }
+        return true;
+
     }
 
     /**

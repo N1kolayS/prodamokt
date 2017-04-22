@@ -10,7 +10,8 @@ use common\models\User;
  */
 class ResetPasswordForm extends Model
 {
-    public $password;
+    public $new_pass;
+    public $sms_token;
 
     /**
      * @var \common\models\User
@@ -19,20 +20,18 @@ class ResetPasswordForm extends Model
 
 
     /**
-     * Creates a form model given a token.
+     * Creates a form model given a phone.
      *
-     * @param string $token
+     * @param string $phone
      * @param array $config name-value pairs that will be used to initialize the object properties
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
-    public function __construct($token, $config = [])
+    public function __construct($phone, $config = [])
     {
-        if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException('Password reset token cannot be blank.');
-        }
-        $this->_user = User::findByPasswordResetToken($token);
+
+        $this->_user = User::findByPhone($phone);
         if (!$this->_user) {
-            throw new InvalidParamException('Wrong password reset token.');
+            throw new InvalidParamException('Пользователь не найден.');
         }
         parent::__construct($config);
     }
@@ -43,9 +42,21 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['sms_token', 'integer'],
+            [['new_pass', 'sms_token'], 'required'],
+            ['new_pass', 'string', 'min' => 6],
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkSmsToken()
+    {
+        if (!$this->_user->sms_reset_token = $this->sms_token)
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -56,8 +67,8 @@ class ResetPasswordForm extends Model
     public function resetPassword()
     {
         $user = $this->_user;
-        $user->setPassword($this->password);
-        $user->removePasswordResetToken();
+        $user->setPassword($this->new_password);
+        $user->removeSmsResetToken();
 
         return $user->save(false);
     }

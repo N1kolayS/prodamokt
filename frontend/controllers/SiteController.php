@@ -25,22 +25,24 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
+                 'access' => [
+                   'class' => AccessControl::className(),
+                    'only' => ['logout', 'signup'],
+                    'rules' => [
+                        [
+                            'actions' => ['signup'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                        [
+                            'actions' => ['logout'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
+
             ],
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -147,12 +149,12 @@ class SiteController extends Controller
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+            if ($model->sendSms()) {
+                Yii::$app->session->setFlash('success', 'На Ваш номер телефона отправлен код.');
 
-                return $this->goHome();
+                $this->redirect(['site/reset-password', 'phone'=>$model->phone]);
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'К сожалению пароль сбросить для данного пользователя невозможно.');
             }
         }
 
@@ -164,22 +166,36 @@ class SiteController extends Controller
     /**
      * Resets password.
      *
-     * @param string $token
+     * @param string $phone
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
+    public function actionResetPassword($phone)
     {
         try {
-            $model = new ResetPasswordForm($token);
+            $model = new ResetPasswordForm($phone);
         } catch (InvalidParamException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
+        echo var_dump(Yii::$app->session->getFlash('success'));
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
 
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post()) && $model->validate() ) {
+        //    echo var_dump($model);
+
+            if ($model->checkSmsToken())
+            {
+                $model->resetPassword();
+                Yii::$app->session->setFlash('success', 'Пароль успешно сброшен.');
+                echo $model->sms_token;
+                //$this->redirect(['site/login']);
+            }
+            else
+            {
+                Yii::$app->session->setFlash('error', 'Код сброса указан не верно.');
+                $this->redirect(['site/reset-password', 'phone'=>$phone]);
+            }
+
         }
 
         return $this->render('resetPassword', [
