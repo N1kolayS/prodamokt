@@ -33,6 +33,9 @@ class ResetPasswordForm extends Model
         if (!$this->_user) {
             throw new InvalidParamException('Пользователь не найден.');
         }
+        if ($this->_user->sms_reset_token==null) {
+            throw new InvalidParamException('Код сброса пароля не установлен.');
+        }
         parent::__construct($config);
     }
 
@@ -49,11 +52,27 @@ class ResetPasswordForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'sms_token' => 'Код сброса',
+            'new_pass' => 'Новый пароль',
+        ];
+    }
+
+    public function getUser()
+    {
+        return $this->_user;
+    }
+
+    /**
      * @return bool
      */
     public function checkSmsToken()
     {
-        if (!$this->_user->sms_reset_token = $this->sms_token)
+        if ($this->_user->sms_reset_token == $this->sms_token)
             return true;
         else
             return false;
@@ -67,7 +86,7 @@ class ResetPasswordForm extends Model
     public function resetPassword()
     {
         $user = $this->_user;
-        $user->setPassword($this->new_password);
+        $user->setPassword($this->new_pass);
         $user->removeSmsResetToken();
 
         return $user->save(false);

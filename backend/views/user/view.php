@@ -127,10 +127,13 @@ $this->registerJs($script, yii\web\View::POS_END);
             }
             else
             {
+
+                echo '<ul class="list-group">';
                 foreach ($model->boards as $board)
                 {
-                    echo $board->name.'<br>';
+                    echo Html::tag('li', Html::a($board->name, ['board/view', 'id' => $board->id]), ['class' => 'list-group-item']);
                 }
+                echo '</ul>';
             }
             ?>
         </div>

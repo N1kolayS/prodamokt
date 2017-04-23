@@ -30,7 +30,7 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
+    \frontend\models\NavBarCustom::begin([
         'brandLabel' => '<img src="/images/logo.png" class="img-brand" >',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
@@ -68,7 +68,7 @@ AppAsset::register($this);
         'items' => $menuItems,
         'encodeLabels' => false,
     ]);
-    NavBar::end();
+    \frontend\models\NavBarCustom::end();
     ?>
 
     <div class="container">

@@ -130,7 +130,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
-                    $this->redirect(['user/sms-activate']);
+                    return $this->redirect(['user/sms-activate']);
                 }
             }
         }
@@ -150,11 +150,9 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendSms()) {
-                Yii::$app->session->setFlash('success', 'На Ваш номер телефона отправлен код.');
+                Yii::$app->session->setFlash('success', 'На Ваш номер телефона отправлен код Сброса пароля.');
 
-                $this->redirect(['site/reset-password', 'phone'=>$model->phone]);
-            } else {
-                Yii::$app->session->setFlash('error', 'К сожалению пароль сбросить для данного пользователя невозможно.');
+                return $this->redirect(['site/reset-password', 'phone'=>$model->phone]);
             }
         }
 
@@ -177,23 +175,22 @@ class SiteController extends Controller
         } catch (InvalidParamException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        echo var_dump(Yii::$app->session->getFlash('success'));
-
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() ) {
-        //    echo var_dump($model);
 
             if ($model->checkSmsToken())
             {
                 $model->resetPassword();
-                Yii::$app->session->setFlash('success', 'Пароль успешно сброшен.');
-                echo $model->sms_token;
-                //$this->redirect(['site/login']);
+                if (Yii::$app->getUser()->login($model->getUser())) {
+                    Yii::$app->session->setFlash('success', 'Пароль успешно изменен.');
+                    return $this->redirect(['user/sms-activate']);
+                }
+
             }
             else
             {
                 Yii::$app->session->setFlash('error', 'Код сброса указан не верно.');
-                $this->redirect(['site/reset-password', 'phone'=>$phone]);
+                return $this->refresh();
             }
 
         }

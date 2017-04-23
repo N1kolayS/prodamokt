@@ -7,19 +7,18 @@ use yii\widgets\DetailView;
 /* @var $model common\models\Board */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Boards', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Объявления', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="board-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+    <p class="pull-right">
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Удалить безвозвратно?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'user_id',
-            'type_id',
-            'town_id',
+        //    'user.fio',
+            'type.name',
+            'town.name',
             'created_at:datetime',
             'started_at:datetime',
             'finished_at:datetime',
@@ -43,11 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'views',
             'looks',
             'enable',
-            'marked',
+
         ],
     ]) ?>
-    start: <?=$model->started_at?><br />
-    time: <?=time()?><br />
+
     <?=$model->isStarted()?>
 
 

@@ -11,6 +11,8 @@ namespace frontend\controllers;
 
 use common\models\Board;
 use common\models\Type;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\Session;
 
 use Yii;
@@ -43,22 +45,17 @@ class AjaxController extends Controller {
         ];
     }
 
-    /*
-     * JSON array of property Ads
+    /**
+     * JSON array of property Boards
+     * @param $id
      */
     public function actionGetProperties($id)
     {
         if (Yii::$app->request->isAjax) {
-
             $id = intval($id);
-
             $type = Type::findOne($id);
-
             $prop = [];
             $properties =  Property::find()->where(['type_id' => $id])->orderBy('number')->all();
-
-
-
             foreach ($properties as $property)
             {
                 $prop[] = array('id' => $property->id, 'mode' => $property->mode, 'val' => $property->generateMode->search());
@@ -67,6 +64,21 @@ class AjaxController extends Controller {
         }
     }
 
+    /**
+     * JSON array of category Boars
+     * @param $id
+     */
+    public function actionGetListTypes($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $list_type = [];
+            foreach (Type::find()->where(['common_id' => intval($id)])->orderBy('sort')->all() as $type)
+            {
+                $list_type[] = array('name' => $type->name, 'url' => Url::toRoute(['board/index', 'Search[type_id]' => $type->id]) );
+            }
+            echo Json::encode($list_type );
+        }
+    }
 
 
     /**

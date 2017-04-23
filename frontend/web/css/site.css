@@ -109,11 +109,13 @@ body {
     background-color: #f2f2f2;
 }
 .navbar-top .navbar-toggle {
-    border-color: #89e787;
+    border-color: #95BF20;
 }
-.navbar-top .navbar-toggle .icon-bar {
-    background-color: #89e787;
+.navbar-top .navbar-toggle span {
+    padding-top: 8px;
+    color: #749719;
 }
+
 .navbar-nav > li > a:focus,
 .navbar-nav > li > a:hover {
     background-color: #b4b4b4;

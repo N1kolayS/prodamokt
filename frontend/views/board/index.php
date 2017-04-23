@@ -25,9 +25,7 @@
     </div>
     <div class="col-md-10">
 
-        <div class="promo-horizontal-900 text-center">
-            <?=\yii\helpers\Html::a('<img src="/promo/club85420699.gif" alt="Всё для девушек"  height="100" width="900" >', 'https://vk.com/club85420699', ['target'=>'_blank'])?>
-        </div>
+
 <?php
             echo \yii\widgets\ListView::widget([
             'pager' => [

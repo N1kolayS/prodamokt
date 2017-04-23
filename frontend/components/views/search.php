@@ -15,6 +15,7 @@ use yii\helpers\Html;
 
 
 $properties_route = Url::toRoute('ajax/get-properties');
+$listTypes_route = Url::toRoute('ajax/get-list-types');
 $array_js_property = $model->propertyToJs();
 
 
@@ -22,9 +23,12 @@ $script = <<< JS
     var input_filed;
     var price_filed = $("#prices_field");
     var type_id = $("#search-type_id");
+    var common_id = $("#search-common_id");
     var prop_field = $("#prop");
     var prop_listing = $("#prop_listing");
     var array_property = $array_js_property;
+    var type_field = $("#type_links");
+    var type_links = $("#type_listing");
     var html_append;
 
 
@@ -32,20 +36,37 @@ $script = <<< JS
 
         prop_field.hide();
         prop_listing.empty();
+        type_field.hide();
+        type_links.empty();
+        html_append = null;
+
         if (reset) {
             $("#search-price_min").val('');
             $("#search-price_max").val('');
         }
         // Выбран общий тип или конкретная категория
-        if (id.indexOf('common') >= 0)
+        if (id.indexOf('common') >= 0) // Общий тип
         {
-
+            var common_id = id.split('-')[1];
             $("#search-type_id").val('');
-            $("#search-common_id").val(id.split('-')[1]);
+            $("#search-common_id").val(common_id);
+
+            type_field.show(200);
+            $.get( "$listTypes_route", { id: common_id } )
+            .done(function( json )
+            {
+                html_append = '';
+                $.each(JSON.parse(json), function() {
+
+                    html_append += '<a href="'+ this.url +'" class="btn btn-default">'+ this.name + '</a> ';
+                });
+                type_links.append(html_append);
+            });
 
         }
-        else
+        else // Выбрана категория
         {
+
             $("#search-type_id").val(id);
             $("#search-common_id").val('');
             // Load Property
@@ -81,33 +102,25 @@ $script = <<< JS
                                     html_append += '<option value="'+this +'">'+this +'</option>';
                                 }
 
-
-
-
-
                             });
                             html_append += '</select>';
                         }
                         prop_listing.append(html_append+' &nbsp;&nbsp; ');
                     });
-
                 }
-
             });
-
         }
-
     }
 
     $(document).ready(function() {
-
         if (type_id.val()!='')
         {
             loadProp(type_id.val(), false);
         }
-
-
-
+        else
+        {
+            loadProp('common-'+common_id.val(), false);
+        }
     });
 
 JS;
@@ -130,27 +143,13 @@ $this->registerJs($script, yii\web\View::POS_END);
         <div class="panel-body">
 
                 <div class="col-md-3">
-                    <?php
-                    //echo var_dump(\common\models\Type::AllTypeSearch());
-                    //Set Default
-                    if ($model->common_id)
-                    {
-                        $default = 'common-'.$model->common_id;
-                    }
-                    else
-                    {
-                        $default = $model->type_id;
-                    }
-
-                    echo Html::dropDownList('name', $default, \common\models\Type::AllTypeSearch(),
+                    <?= Html::dropDownList('name', $model->common_id ? 'common-'.$model->common_id : $model->type_id, \common\models\Type::AllTypeSearch(),
                         [
                             'options' => \common\models\Type::AllTypeSearch(true),
                             'prompt' => '- Тип Объявления -',
                             'onchange'=>'loadProp($(this).val(), true)',
                             'class' => 'form-control'
-                        ]);
-
-                    ?>
+                        ]); ?>
                     <div class="help-block"></div>
                 </div>
                 <div class="col-md-5">
@@ -166,10 +165,6 @@ $this->registerJs($script, yii\web\View::POS_END);
                         <div class="help-block"></div>
                     </div>
                 </div>
-
-
-
-
 
         </div>
         <div class="panel-footer">
@@ -197,6 +192,13 @@ $this->registerJs($script, yii\web\View::POS_END);
                         ])->label(false) ?>
                     </div>
                 </div>
+            </div>
+            <div class="row" id="type_links" style="display: none">
+
+                <div class="col-md-12 text-center" id="type_listing">
+
+                </div>
+
             </div>
 
         </div>

@@ -41,13 +41,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->user->username, ['user/view', 'id' => $model->user_id]);
                 },
             ],
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function($model, $data){
+                    return \yii\helpers\StringHelper::truncate($model->name, 20);
+                },
+            ],
 
             // 'updated_at',
-             'name',
+
             // 'body:ntext',
          //    'cost',
              'views',
-             'looks',
+         //    'looks',
             // 'enable',
             // 'marked',
 
