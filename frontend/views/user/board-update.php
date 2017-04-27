@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $route_image_del = Url::toRoute(['ajax/image-delete', 'id' => $model->id]);
 $route_image_add = Url::toRoute(['ajax/image-add', 'id' => $model->id]);
+$route_image_rotate = Url::toRoute(['ajax/image-rotate', 'id' => $model->id]);
 $script = <<< JS
 
 function delImage(id_image)
@@ -37,6 +38,22 @@ function delImage(id_image)
                 if (data.success == true)
                 {
                     $("#thumb_"+id_image).remove();
+                }
+            });
+}
+
+function rotateImage(id_image)
+{
+    $.get( "$route_image_rotate", { id_image: id_image } )
+            .done(function( json )
+            {
+                data = JSON.parse(json);
+                if (data.success == true)
+                {
+                    img = $("#thumb_"+id_image).find('img');
+                    date = new Date();
+                    newsrc = data.path+'?'+date.getTime();
+                    img.attr('src', newsrc);
                 }
             });
 }
@@ -72,10 +89,15 @@ $('#file').change(function() {
                     $('#loading-btn').show();
                 }
 
-                $("#img_list").append('<li  id="thumb_'+respond.image.id +'"><div class="thumbnail img-upload">'+
-                                '<img src="'+respond.image.url +'" />' +
-                                '<div class="caption"><a class="btn btn-danger btn-sm" role="button" onclick="delImage('+respond.image.id +')"><span class="glyphicon glyphicon-trash"></span> Удалить Изображение</a>'+
-                                '</div></div></li>');
+                $("#img_list").append('<li  id="thumb_'+respond.image.id +'"><div class="thumbnail img-upload">' +
+                    '<div class="img-upload-over">'+
+                        '<img src="'+respond.image.url +'" height="auto" width="200" />' +
+                    '</div>' +
+                    '<div class="caption">' +
+                                '<a class="btn btn-danger btn-sm" role="button" onclick="delImage('+respond.image.id +')"><span class="glyphicon glyphicon-trash"></span> Удалить</a> ' +
+                                ' <a class="btn btn-info btn-sm" role="button" onclick="rotateImage('+respond.image.id +')"><span class="glyphicon glyphicon-repeat"></span> Повернуть</a>'+
+                    '</div>' +
+                    '</div></li>');
 
             }
         }
@@ -167,10 +189,13 @@ $this->registerJs($script, yii\web\View::POS_END);
                         ?>
                         <li  id="thumb_<?=$images->id?>">
                             <div class="thumbnail img-upload  ">
-                                <?= Html::img($images->getUrl('150x150'))?>
+                                <div class="img-upload-over">
+                                    <?= Html::img($images->getUrl('200'), [ 'width'=>200, 'height' => 'auto' ])?>
+                                </div>
                                 <div class="caption">
 
-                                    <a class="btn btn-danger btn-sm" role="button" onclick="delImage(<?=$images->id?>)"><span class="glyphicon glyphicon-trash"></span> Удалить Изображение</a>
+                                    <a class="btn btn-danger btn-sm" role="button" onclick="delImage(<?=$images->id?>)"><span class="glyphicon glyphicon-trash"></span> Удалить</a>
+                                    <a class="btn btn-info btn-sm" role="button" onclick="rotateImage(<?=$images->id?>)"><span class="glyphicon glyphicon-repeat"></span> Повернуть</a>
                                 </div>
                             </div>
                         </li>

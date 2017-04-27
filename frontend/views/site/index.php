@@ -27,6 +27,18 @@ $script = <<< JS
 
 
     });
+/*
+    $(".main-pin").mouseenter(function() {
+
+
+   $( this ).find( "img" ).addClass('pin-image-hover');
+
+  })
+  .mouseleave(function() {
+
+    $( this ).find( "img" ).removeClass('pin-image-hover');
+  });
+*/
 
 JS;
 $this->registerJs($script, yii\web\View::POS_END);
@@ -41,9 +53,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4 ">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_PLACE  ]) ?>">
-                            <img src="/images/pin-premises.png" height="150" width="auto"  >
+                            <img src="/images/pin-premises-2.png" height="150" width="auto" class="pin-image"  >
                         </a>
-                        <h1 class="main-pin-text">Недвижимость</h1>
+                        <h1 class="main-pin-text"> - Недвижимость - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -61,9 +73,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_AUTO ]) ?>">
-                            <img src="/images/pin-auto.png"  height="150" width="auto" >
+                            <img src="/images/pin-auto-2.png"  height="150" width="auto" class="pin-image" >
                         </a>
-                        <h1 class="main-pin-text">Автомобили</h1>
+                        <h1 class="main-pin-text"> - Автомобили - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -80,9 +92,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_SERVICE  ]) ?>">
-                            <img src="/images/pin-service.png"  height="150" width="auto" >
+                            <img src="/images/pin-service-2.png"  height="150" width="auto" class="pin-image" >
                         </a>
-                        <h1 class="main-pin-text">Услуги</h1>
+                        <h1 class="main-pin-text"> - Услуги - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -102,9 +114,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4 ">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_JOB  ]) ?>">
-                            <img src="/images/pin-jobs.png" height="150" width="auto"  >
+                            <img src="/images/pin-jobs-2.png" height="150" width="auto" class="pin-image" >
                         </a>
-                        <h1 class="main-pin-text">Работа</h1>
+                        <h1 class="main-pin-text"> - Работа - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -122,9 +134,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_ELECT  ]) ?>">
-                            <img src="/images/pin-elect.png" height="150" width="auto"  >
+                            <img src="/images/pin-elect-2.png" height="150" width="auto" class="pin-image" >
                         </a>
-                        <h1 class="main-pin-text">Электроника</h1>
+                        <h1 class="main-pin-text"> - Электроника - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -141,9 +153,9 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_STUFF  ]) ?>">
-                            <img src="/images/pin-things.png" height="150" width="auto"  >
+                            <img src="/images/pin-things-2.png" height="150" width="auto"  class="pin-image" >
                         </a>
-                        <h1 class="main-pin-text">Личные вещи</h1>
+                        <h1 class="main-pin-text"> - Личные вещи - </h1>
                         <div class="main-pin-list text-justify">
                             <?php
                             foreach ($list_types as $type)
@@ -170,7 +182,7 @@ $this->registerJs($script, yii\web\View::POS_END);
             <div class="panel">
                 <p>
                     <ul class="list-inline">
-                        <li><span class="label label-info label-soc"> Подписывайтесь в соцсетях:</span> </li>
+                        <li> <span class="subscribe-social"> - подписывайтесь в соцсетях - </span> </li>
                         <li><?=Html::a(Html::img('/images/social-vk.png'), Yii::$app->params['social.vk'], ['target' => '_blank'])?></li>
                         <li><?=Html::a(Html::img('/images/social-tweet.png'), Yii::$app->params['social.tweet'], ['target' => '_blank'])?></li>
                         <li><?=Html::a(Html::img('/images/social-inst.png'), Yii::$app->params['social.inst'], ['target' => '_blank'])?></li>

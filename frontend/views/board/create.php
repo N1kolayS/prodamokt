@@ -24,9 +24,23 @@ $this->title = $title;
 $this->params['breadcrumbs'][] = $this->title;
 
 
-$route_image_del = Url::toRoute(['ajax/image-create-delete']);
-$route_image_add = Url::toRoute(['ajax/image-create-add']);
+$route_image_del    = Url::toRoute(['ajax/image-create-delete']);
+$route_image_add    = Url::toRoute(['ajax/image-create-add']);
+$route_image_rotate = Url::toRoute(['ajax/image-create-rotate']);
 $script = <<< JS
+
+$(function(){
+     $(".btn-success").click(function () {
+       $(".btn-success").attr("disabled", true);
+       $(".btn-success").html('Подготовка к публикации');
+       $('#w0').submit();
+      $('input, textarea, select').click(function(){
+        $(".btn-success").attr("disabled", false);
+        $(".btn-success").html('Создать');
+      })
+
+     });
+   });
 
 var id_i = 0;
 function delImage(name, id_index)
@@ -41,6 +55,24 @@ function delImage(name, id_index)
                 }
             });
 }
+
+function rotateImage(name, id_index)
+{
+    $.get( "$route_image_rotate", { name: name } )
+            .done(function( json )
+            {
+                data = JSON.parse(json);
+                if (data.success == true)
+                {
+                    img = $("#thumb_"+id_index).find('img');
+                    date = new Date();
+                    newsrc = img.attr('src')+'?'+date.getTime();
+                    img.attr('src', newsrc);
+
+                }
+            });
+}
+
 $('#file').change(function() {
 
     $("#wait_loading").show();
@@ -71,8 +103,10 @@ $('#file').change(function() {
                     $('#loading-btn').show();
                 }
                 $("#img_list").append('<li  id="thumb_'+id_i +'"><div class="thumbnail img-upload">'+
-                                '<img src="'+respond.image.url +'" height="150" class="img-responsive" />' +
-                                '<div class="caption"><a class="btn btn-danger btn-sm" role="button" onclick="delImage(\''+respond.image.name +'\', '+id_i+')"><span class="glyphicon glyphicon-trash"></span> Удалить Изображение</a>'+
+                                '<div class="img-upload-over"><img src="'+respond.image.url +'" height="auto" width="200" /></div>' +
+                                '<div class="caption">' +
+                                '<a class="btn btn-danger btn-sm" role="button" onclick="delImage(\''+respond.image.name +'\', '+id_i+')"><span class="glyphicon glyphicon-trash"></span> Удалить </a> ' +
+                                ' <a class="btn btn-info btn-sm" role="button" onclick="rotateImage(\''+respond.image.name +'\', '+id_i+')"><span class="glyphicon glyphicon-repeat"></span> Повернуть</a>'+
                                 '</div></div></li>');
             }
         }
@@ -146,7 +180,7 @@ $this->registerJs($script, yii\web\View::POS_END);
 
             <div class="thumbnail">
                 <label class="btn btn-info btn-file" id="loading-btn" data-loading-text="Пожалуйста подождите. Идет Загрузка фото ...">
-                    <span class="glyphicon glyphicon-picture"></span> Добавить фото <?= Html::input('file', 'images[]', null, ['multiple' => true , 'id' => 'file'])?>
+                    <span class="glyphicon glyphicon-picture"></span> Добавить фото <?= Html::input('file', 'images[]', null, ['multiple' => true , 'id' => 'file', 'accept'=> 'image/*'])?>
                 </label>
                 <span class="label label-warning" style="display: none" id="wait_loading">Пожалуйста ожидайте, идет загрузка файлов.</span>
 
@@ -164,10 +198,14 @@ $this->registerJs($script, yii\web\View::POS_END);
                         ?>
                         <li  id="thumb_99999<?=$i?>">
                             <div class="thumbnail img-upload  ">
-                                <img src="<?=$scan_dir['url'].$images?>" width="150" height="auto" />
+                                <div class="img-upload-over">
+                                    <img src="<?=$scan_dir['url'].$images?>" width="200" height="auto" />
+                                </div>
+
                                 <div class="caption">
 
-                                    <a class="btn btn-danger btn-sm" role="button" onclick="delImage('<?=$images?>', 99999<?=$i?>)"><span class="glyphicon glyphicon-trash"></span> Удалить Изображение</a>
+                                    <a class="btn btn-danger btn-sm" role="button" onclick="delImage('<?=$images?>', 99999<?=$i?>)"><span class="glyphicon glyphicon-trash"></span> Удалить</a>
+                                    <a class="btn btn-info btn-sm" role="button" onclick="rotateImage('<?=$images?>', 99999<?=$i?>)"><span class="glyphicon glyphicon-repeat"></span> Повернуть</a>
                                 </div>
                             </div>
                         </li>

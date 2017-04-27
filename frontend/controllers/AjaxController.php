@@ -11,9 +11,13 @@ namespace frontend\controllers;
 
 use common\models\Board;
 use common\models\Type;
-use yii\helpers\ArrayHelper;
+use Intervention\Image\ImageManagerStatic;
 use yii\helpers\Url;
-use yii\web\Session;
+
+use Intervention\Image\Image;
+
+
+
 
 use Yii;
 use yii\helpers\Json;
@@ -35,7 +39,7 @@ class AjaxController extends Controller {
                 'only' => ['image-delete', 'image-add', 'image-create-add', 'image-create-delete'],
                 'rules' => [
                     [
-                        'actions' => ['image-delete', 'image-add', 'image-create-add', 'image-create-delete'],
+                        'actions' => ['image-delete', 'image-add', 'image-create-add', 'image-create-delete', 'image-create-rotate', 'image-rotate'],
                         'allow' => true,
                         'roles' => ['user'],
                     ],
@@ -107,7 +111,8 @@ class AjaxController extends Controller {
                 $tmp_user_dir = Board::createTmpDir();
                 $name_file = uniqid().'.'.$ext;
                 $path = $tmp_user_dir.$name_file;
-                if (move_uploaded_file($_FILES[0]['tmp_name'], $path)) {
+
+                if ($this->resizeImage($_FILES[0]['tmp_name'], $path)) {
 
                     $image = ['name' => $name_file, 'url' => '/uploadimg/'.Yii::$app->user->id.'-tmp/'.$name_file];
                     $result = true;
@@ -130,6 +135,28 @@ class AjaxController extends Controller {
             $result = false;
             if (unlink(Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/'.$name))
             {
+                $result = true;
+            }
+
+            echo Json::encode(['success' => $result]);
+        }
+    }
+
+    /**
+     * Rotate Images by Name image on Create
+     *
+     */
+    public function actionImageCreateRotate()
+    {
+        if (Yii::$app->request->isAjax) {
+            $name = Yii::$app->getRequest()->getQueryParam('name');
+            $result = false;
+            $load_path =Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/'.$name;
+            if (file_exists($load_path))
+            {
+                $img = ImageManagerStatic::make($load_path);
+                $img->rotate(90);
+                $img->save();
                 $result = true;
             }
 
@@ -190,7 +217,7 @@ class AjaxController extends Controller {
             {
                 $name_file = uniqid().'.'.$ext;
                 $path = Yii::getAlias('@frontend/web/uploadimg/').$name_file;
-                if (move_uploaded_file($_FILES[0]['tmp_name'], $path)) {
+                if ($this->resizeImage($_FILES[0]['tmp_name'], $path)) {
                     $lastImage =  $model->attachImage($path, false, $model->id.'-'. $name_file);
                     $image = ['id' => $lastImage->id, 'url' => $lastImage->getUrl('150x150')];
                     $result = true;
@@ -200,6 +227,36 @@ class AjaxController extends Controller {
                 //usleep(2000000);
             }
             echo Json::encode(['success' => $result,  'image' => $image]);
+        }
+    }
+
+    /**
+     * Rotate Images by Id image on Create
+     * @param $id
+     */
+    public function actionImageRotate($id)
+    {
+        if (Yii::$app->request->isAjax) {
+            $id_image = intval(Yii::$app->getRequest()->getQueryParam('id_image'));
+            $model = $this->findModelBoard($id);
+            $result = false;
+            $original_path = null;
+            if ($model) {
+                foreach ($model->getImages() as $image) {
+                    if ($image->id == $id_image) {
+                        $original_path =$image->getPathToOrigin();
+                        $img = ImageManagerStatic::make($original_path);
+                        $img->rotate(90);
+                        $img->save();
+                        $result = true;
+                        $image->clearCache();
+                    }
+
+                }
+
+            }
+
+            echo Json::encode(['success' => $result, 'path' => str_replace(Yii::getAlias('@webroot'), '', $original_path)]);
         }
     }
 
@@ -247,4 +304,38 @@ class AjaxController extends Controller {
                 return false;
         }
     }
+
+    /**
+     * @param $load
+     * @param $save
+     * @return Image
+     */
+    protected function resizeImage($load, $save)
+    {
+        $img = ImageManagerStatic::make($load);
+        $height = $img->getHeight();
+        $width  = $img->getWidth();
+        // Resize image by biggest size
+        if ($width>$height) // Album
+        {
+            if ($width>800)
+            {
+                $img->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+        }
+        else // Portrait
+        {
+            if ($height>800)
+            {
+                $img->resize(null, 800, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+        }
+        return $img->save($save);
+    }
+
+
 }

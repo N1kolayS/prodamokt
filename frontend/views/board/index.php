@@ -25,9 +25,7 @@
     </div>
     <div class="col-md-10">
 
-
-<?php
-            echo \yii\widgets\ListView::widget([
+    <?= \yii\widgets\ListView::widget([
             'pager' => [
                 'firstPageLabel' => 'Первая',
                 'lastPageLabel' => 'Последняя',
@@ -42,8 +40,8 @@
                 'summary' =>'<span class="text-muted">Объявления с {begin} по {end}. Всего {totalCount} </span> ',
 
             'itemView' => '_record',
-        ]);
-            ?>
+        ]); ?>
+
     </div>
     <div class="col-md-1">
 
