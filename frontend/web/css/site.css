@@ -60,7 +60,7 @@ body {
 
 .navbar-brand {
     max-height: 70px;
-    padding-top: 5px;
+    padding-top: 15px;
     padding-bottom: 0;
 
 }
@@ -109,11 +109,11 @@ body {
     background-color: #f2f2f2;
 }
 .navbar-top .navbar-toggle {
-    border-color: #95BF20;
+    border-color: #3f3f3f;
 }
 .navbar-top .navbar-toggle span {
     padding-top: 8px;
-    color: #749719;
+    color: #646464;
 }
 
 .navbar-nav > li > a:focus,

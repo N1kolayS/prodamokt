@@ -27,18 +27,6 @@ $script = <<< JS
 
 
     });
-/*
-    $(".main-pin").mouseenter(function() {
-
-
-   $( this ).find( "img" ).addClass('pin-image-hover');
-
-  })
-  .mouseleave(function() {
-
-    $( this ).find( "img" ).removeClass('pin-image-hover');
-  });
-*/
 
 JS;
 $this->registerJs($script, yii\web\View::POS_END);
@@ -53,7 +41,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4 ">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_PLACE  ]) ?>">
-                            <img src="/images/pin-premises-2.png" height="150" width="auto" class="pin-image"  >
+                            <img src="/images/pin-premises-2.png" height="140" width="auto" class="pin-image"  >
                         </a>
                         <h1 class="main-pin-text"> - Недвижимость - </h1>
                         <div class="main-pin-list text-justify">
@@ -73,7 +61,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_AUTO ]) ?>">
-                            <img src="/images/pin-auto-2.png"  height="150" width="auto" class="pin-image" >
+                            <img src="/images/pin-auto-2.png"  height="140" width="auto" class="pin-image" >
                         </a>
                         <h1 class="main-pin-text"> - Автомобили - </h1>
                         <div class="main-pin-list text-justify">
@@ -92,7 +80,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin  text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_SERVICE  ]) ?>">
-                            <img src="/images/pin-service-2.png"  height="150" width="auto" class="pin-image" >
+                            <img src="/images/pin-service-2.png"  height="140" width="auto" class="pin-image" >
                         </a>
                         <h1 class="main-pin-text"> - Услуги - </h1>
                         <div class="main-pin-list text-justify">
@@ -114,7 +102,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4 ">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_JOB  ]) ?>">
-                            <img src="/images/pin-jobs-2.png" height="150" width="auto" class="pin-image" >
+                            <img src="/images/pin-jobs-2.png" height="140" width="auto" class="pin-image" >
                         </a>
                         <h1 class="main-pin-text"> - Работа - </h1>
                         <div class="main-pin-list text-justify">
@@ -134,7 +122,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_ELECT  ]) ?>">
-                            <img src="/images/pin-elect-2.png" height="150" width="auto" class="pin-image" >
+                            <img src="/images/pin-elect-2.png" height="140" width="auto" class="pin-image" >
                         </a>
                         <h1 class="main-pin-text"> - Электроника - </h1>
                         <div class="main-pin-list text-justify">
@@ -153,7 +141,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                 <div class="col-md-4">
                     <div class="main-pin text-center">
                         <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_STUFF  ]) ?>">
-                            <img src="/images/pin-things-2.png" height="150" width="auto"  class="pin-image" >
+                            <img src="/images/pin-things-2.png" height="140" width="auto"  class="pin-image" >
                         </a>
                         <h1 class="main-pin-text"> - Личные вещи - </h1>
                         <div class="main-pin-list text-justify">
