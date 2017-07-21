@@ -14,7 +14,7 @@ use yii\bootstrap\Html;
 
 ?>
 
-<a href="<?=Url::toRoute(['board/view', 'id' => $model->id])?>" class="list-group-item  marked_<?=$model->marked?>">
+<a href="<?=Url::toRoute(['board/view', 'id' => $model->id.'_'.$model->slug])?>" class="list-group-item  marked_<?=$model->marked?>">
     <div class="media">
         <p class="pull-left">
             <?php

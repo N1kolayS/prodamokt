@@ -1,7 +1,9 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Board;
 use common\models\Type;
+
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -75,10 +77,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $time = time();
+        $board_last = Board::find()->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=". Board::STATUS_ENABLE)->orderBy('created_at DESC')->limit(10)->all();
         $list_types = Type::find()->orderBy('sort')->all();
         return $this->render('index', [
+            'board_last' => $board_last,
             'list_types' => $list_types
+
         ]);
+
     }
 
     /**

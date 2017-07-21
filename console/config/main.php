@@ -28,7 +28,7 @@ return [
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
-            'baseUrl' => 'https://prodamokt.ru',
+            'baseUrl' => 'https://boxok.ru',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [

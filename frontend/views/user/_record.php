@@ -14,7 +14,7 @@ use yii\bootstrap\Html;
 
 ?>
 
-<a href="<?=Url::toRoute(['user/board-view', 'id' => $model->id])?>" class="list-group-item  marked_<?=$model->marked?>">
+<a href="<?=Url::toRoute(['user/board-view', 'id' => $model->id])?>" class="list-group-item  <?=$model->isActive() ? : 'list-group-item-danger'?>">
     <div class="media">
         <div class="col-md-2">
             <?php

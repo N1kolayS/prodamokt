@@ -35,13 +35,17 @@ class PosterController extends Controller {
                     }
                     else
                     {
-                        $image = Yii::getAlias('@frontend/web/images/').'logo0.png';
+                        $image = Yii::getAlias('@frontend/web/images/').'logo.png';
                     }
+
                     //echo $board->name.PHP_EOL. $board->body. PHP_EOL;
+
                     $text = StringHelper::truncateWords($board->body, 70, '...');
-                    $body =  $board->name.PHP_EOL.PHP_EOL. $text. PHP_EOL. PHP_EOL. 'Подробнее '. Url::to(['board/view', 'id'=>$board->id]);
+                    $body =  $board->name.PHP_EOL.PHP_EOL. $text. PHP_EOL. PHP_EOL. 'Подробнее '. Url::to(['board/view', 'id'=>$board->id.'_'.$board->slug]);
+
                     $vkApi = new Vk(['access_token' => Yii::$app->params['vk.token']]);
-                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $body, $image);
+                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $body, $image, [$board->type->name.'@boxokru']);
+                    //$vkApi->postToPublic(Yii::$app->params['vk.group'], $body, '');
                     Board::updateAll(['post_vk' => time()], ['id' => $board->id]);
                 }
 

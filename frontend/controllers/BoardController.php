@@ -74,6 +74,8 @@ class BoardController extends Controller
 
     public function actionView($id)
     {
+        $id = strpos($id, '_') ? (int) substr($id, 0, strpos($id, '_') ) : $id;
+        //echo var_dump($id);
         $model = $this->findModel($id);
         $model->updateView();
         return $this->render('view', [
@@ -115,10 +117,10 @@ class BoardController extends Controller
         $model->type_id = $type_id;
 
         $property_list = Property::find()->where(['type_id'=> $type_id])->orderBy('number')->all();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())&& $model->save() ) {
+
 
             $model->images = UploadedFile::getInstances($model, 'images');
-
             $scan_dir = Board::scanDirImages();
             if ($scan_dir)
             {
@@ -127,8 +129,8 @@ class BoardController extends Controller
                     $model->attachImage($path,  false, $model->id.'-'. $file);
                 }
             }
-
             Board::deleteTmpDir();
+
             Yii::$app->session->setFlash('success', 'Объявление <strong>'. $model->name .'</strong> успешно добавлено');
             return $this->redirect(['user/cabinet']);
         } else {

@@ -48,6 +48,7 @@ return [
                 '<action>'=>'site/<action>',
 
                 'board/view/<id:[\w-]+>' => 'board/view',
+                'board/create/<id:[\w-]+>' => 'board/create',
 
             ],
         ],

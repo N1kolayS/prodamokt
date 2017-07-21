@@ -45,7 +45,7 @@ $this->registerJs("jQuery('#reveal-password').hover(
                 'inputTemplate' => '<div class="input-group">{input}<span class="input-group-addon"><span class="glyphicon glyphicon-eye-open" id="reveal-password"></span> </span></div>',
             ])->passwordInput() ?>
 
-
+                <p class="text-center text-muted">Регистрируюсь вы принимаете правила сервиса и политику конфидециальности</p>
                 <div class="form-group">
                     <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

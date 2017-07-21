@@ -28,7 +28,7 @@ $route_image_del    = Url::toRoute(['ajax/image-create-delete']);
 $route_image_add    = Url::toRoute(['ajax/image-create-add']);
 $route_image_rotate = Url::toRoute(['ajax/image-create-rotate']);
 $script = <<< JS
-
+/*
 $(function(){
      $(".btn-success").click(function () {
        $(".btn-success").attr("disabled", true);
@@ -41,7 +41,7 @@ $(function(){
 
      });
    });
-
+*/
 var id_i = 0;
 function delImage(name, id_index)
 {

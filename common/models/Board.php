@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\FileHelper;
+use yii\helpers\HtmlPurifier;
 
 /**
  * This is the model class for table "{{%board}}".
@@ -31,6 +33,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $value6
  * @property string $value7
  * @property string $value8
+ * @property string $slug
  *
  * @property Town $town
  * @property Type $type
@@ -58,6 +61,18 @@ class Board extends \yii\db\ActiveRecord
             TimestampBehavior::className(),
             'image' => [
                 'class' => 'rico\yii2images\behaviors\ImageBehave',
+            ],
+            'slug' => [
+                'class' => 'Zelenin\yii\behaviors\Slug',
+                'slugAttribute' => 'slug',
+                'attribute' => 'name',
+                // optional params
+                'ensureUnique' => true,
+                'replacement' => '-',
+                'lowercase' => true,
+                'immutable' => false,
+                // If intl extension is enabled, see http://userguide.icu-project.org/transforms/general.
+                'transliterateOptions' => 'Russian-Latin/BGN; Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;'
             ]
         ];
 
@@ -210,8 +225,13 @@ class Board extends \yii\db\ActiveRecord
         return $tmp_user_dir;
     }
 
+    /**
+     * @return bool
+     */
     public static function deleteTmpDir()
     {
+        FileHelper::removeDirectory(Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/');
+        /*
         $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
         if (is_dir($tmp_user_dir))
         {
@@ -221,9 +241,13 @@ class Board extends \yii\db\ActiveRecord
             }
             rmdir($tmp_user_dir);
         }
+        */
         return true;
     }
 
+    /**
+     * @return array|bool
+     */
     public static function scanDirImages()
     {
         $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
@@ -375,6 +399,8 @@ class Board extends \yii\db\ActiveRecord
         }
     }
 
+
+
     /**
      * Превращение цены в INT
      * @todo Сделать по нормальному
@@ -387,6 +413,7 @@ class Board extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert))
         {
+
             if ($this->cost)
                 $this->cost = intval(str_replace(' ', '', $this->cost));
 
