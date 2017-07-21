@@ -38,7 +38,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     \frontend\models\NavBarCustom::begin([
-        'brandLabel' => '<img src="/images/logo.png" class="img-brand" alt="BoxOk" > <span>Бесплатные Объявления</span> ',
+        'brandLabel' => '<img src="/images/logo.png" class="img-brand" alt="BoxOk" >  ',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-default  navbar-fixed-top',

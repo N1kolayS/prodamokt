@@ -87,7 +87,7 @@ class Type extends \yii\db\ActiveRecord
             self::CATEGORY_ELECT   => 'Электроника',
             self::CATEGORY_JOB     => 'Работа',
             self::CATEGORY_SERVICE => 'Услуги',
-            self::CATEGORY_STUFF   => 'Вещи',
+            self::CATEGORY_STUFF   => 'Разное',
 
         ];
         return $data;

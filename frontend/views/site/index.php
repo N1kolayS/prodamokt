@@ -41,7 +41,7 @@ JS;
                 <a href="<?= Url::toRoute(['board/index', 'Search[common_id]' => Type::CATEGORY_AUTO ]) ?>">
                     <img src="/images/pin-auto.png"  height="140" width="auto" class="pin-image" >
                 </a>
-                <h1 class="main-pin-text">Автомобили</h1>
+                <h1 class="main-pin-text">Транспорт</h1>
                 <div class="main-pin-list text-justify">
                     <?php
                     foreach ($list_types as $type)

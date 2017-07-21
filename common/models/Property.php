@@ -16,7 +16,6 @@ use Yii;
  * @property string $value
  * @property integer $number
  *
- * @property BoardProperty[] $boardProperties
  * @property Board[] $boards
  * @property Type $type
  *
