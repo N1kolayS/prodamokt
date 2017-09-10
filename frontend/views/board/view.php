@@ -72,14 +72,26 @@ $this->registerJs($script, yii\web\View::POS_END);
         </div>
 
         <div class="col-md-5">
-            <?php if ($model->getPrice()) {
-                echo '<p class="lead">'.$model->price['name'].': <span class="label label-success">'.$model->price['cost'].'</span></p>';
-            } ?>
-            <p class="lead"> Продавец: <strong><?=$model->user->username?></strong></p>
-            <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span> </p>
-            <p class="lead"> <span class="glyphicon glyphicon-map-marker"></span> <?=$model->town->name?>  </p>
+            <?php
+            if ($model->isActive()) {
 
-            <hr />
+
+                ?>
+                <?php if ($model->getPrice()) {
+                    echo '<p class="lead">' . $model->price['name'] . ': <span class="label label-success">' . $model->price['cost'] . '</span></p>';
+                } ?>
+                <p class="lead"> Продавец: <strong><?= $model->user->username ?></strong></p>
+                <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span></p>
+                <p class="lead"><span class="glyphicon glyphicon-map-marker"></span> <?= $model->town->name ?>  </p>
+
+                <hr/>
+                <?php
+            }
+            else
+            {
+                echo '<h2>Объявление закрыто</h2>';
+            }
+            ?>
 
             <p><?=nl2br(Html::encode($model->body))?></p>
             <table class="table table-striped table-condensed">

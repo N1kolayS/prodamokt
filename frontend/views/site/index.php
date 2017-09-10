@@ -15,6 +15,19 @@ JS;
 //$this->registerJs($script, yii\web\View::POS_END);
 ?>
 <div class="site-index">
+    <h2 class="text-center main-head"> BoxOK - Сайт бесплатных объявлений </h2>
+    <p class="text-center list-town ">
+        <?php
+        $isLine = false;
+        foreach ($towns as $twn)
+        {
+            echo $isLine? ' | ' : ' ';
+            $isLine = true;
+            echo   Html::a($twn->name, ['board/index', 'Search[town_id]' => $twn->id ]);
+        }
+
+        ?>
+    </p>
     <div class="row">
         <div class="col-md-2 ">
             <div class="main-pin  text-center">
@@ -154,5 +167,8 @@ JS;
 
         </div>
 
+    </div>
+    <div class="text-center">
+        <p class="main-pin-text">Подписывайтесь: <a href="<?=Yii::$app->params['social.vk']?>"> <img src="/images/vk.png" height="30" width="auto"></a></p>
     </div>
 </div>

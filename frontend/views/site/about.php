@@ -4,13 +4,23 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
+$this->title = 'О нас';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
+    <blockquote>
+        <p>BoxOk - коробка с объявлениями</p>
 
-    <code><?= __FILE__ ?></code>
+    </blockquote>
+    <p>Бесплатные, неограниченные объявления по городам Октябрьский, Туймазы, и другим.</p>
+
+    <blockquote>
+        <p>Условия использования</p>
+    </blockquote>
+    <p>Размещая объявления на сайте boxok.ru Вы принимаете следующие условия:</p>
+    <p>1. Указанные при регистрации имя и телефон становятся доступными, в рамках ваших объявлений, всем посетителям сайта</p>
+    <p>2. Размещая объявления руководствоваться здравым смыслом и законами РФ. </p>
+
+
 </div>

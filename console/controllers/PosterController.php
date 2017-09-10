@@ -44,7 +44,7 @@ class PosterController extends Controller {
                     $body =  $board->name.PHP_EOL.PHP_EOL. $text. PHP_EOL. PHP_EOL. 'Подробнее '. Url::to(['board/view', 'id'=>$board->id.'_'.$board->slug]);
 
                     $vkApi = new Vk(['access_token' => Yii::$app->params['vk.token']]);
-                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $body, $image, [$board->type->name.'@boxok', $board->town->name.'@boxok']);
+                    $vkApi->postToPublic(Yii::$app->params['vk.group'], $body, $image, [$this->cleanTag($board->type->name).'@boxok', $this->cleanTag($board->town->name).'@boxok']);
                     //$vkApi->postToPublic(Yii::$app->params['vk.group'], $body, '');
                     Board::updateAll(['post_vk' => time()], ['id' => $board->id]);
                 }
@@ -52,6 +52,11 @@ class PosterController extends Controller {
             }
         }
 
+    }
+
+    protected function cleanTag($tag)
+    {
+        return str_replace([',', '.', '!', '/', '`', '<', '>', '?', '-', '+', '='], '', $tag);
     }
 
 

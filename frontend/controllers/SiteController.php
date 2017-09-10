@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Board;
+use common\models\Town;
 use common\models\Type;
 
 use Yii;
@@ -80,9 +81,11 @@ class SiteController extends Controller
         $time = time();
         $board_last = Board::find()->where(" `started_at` <= '$time' AND `finished_at` >= '$time' AND `enable`=". Board::STATUS_ENABLE)->orderBy('created_at DESC')->limit(10)->all();
         $list_types = Type::find()->orderBy('sort')->all();
+        $towns = Town::find()->orderBy('id')->all();
         return $this->render('index', [
             'board_last' => $board_last,
-            'list_types' => $list_types
+            'list_types' => $list_types,
+            'towns' => $towns,
 
         ]);
 
@@ -204,6 +207,13 @@ class SiteController extends Controller
 
         return $this->render('resetPassword', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionAbout()
+    {
+        return $this->render('about', [
+           // 'model' => $model,
         ]);
     }
 }

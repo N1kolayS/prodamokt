@@ -46,6 +46,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => '<span class="glyphicon glyphicon-bullhorn"></span> Подать объявление', 'url' => ['/board/step'], 'linkOptions' => ['class' => 'nav-add']  ],
+        ['label' => '<span class=" glyphicon glyphicon-book"></span> О нас', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-about']  ],
         /*
         ['label' => 'Недвижимость', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_PLACE ], 'linkOptions' => ['class' => 'nav-premises']  ],
         ['label' => 'Автомобили', 'url' => ['/board/index', 'Search[common_id]' => Type::CATEGORY_AUTO], 'linkOptions' => ['class' => 'nav-auto']  ],
@@ -58,7 +59,7 @@ AppAsset::register($this);
     ];
     if (Yii::$app->user->isGuest) {
         //$menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => '<span class="glyphicon glyphicon-user"></span> Войти', 'url' => ['/site/login']];
     } else {
 
         $menuItems[] = ['label' => '<span class="glyphicon glyphicon-user"></span> '.Yii::$app->user->identity->username,  'items' =>

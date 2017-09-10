@@ -78,6 +78,23 @@ body {
     outline: none;
 }
 
+
+.navbar-default .navbar-nav > li > a.nav-add {
+    background-color: #62ab8b;
+    color: #ffffff; !important;
+    transition: .3s;
+}
+
+.nav-add span {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-nav > li > a.nav-add:hover {
+    background-color: #348461;
+    color: #ffffff;
+    transition: .3s;
+}
+
 .navbar-brand {
     padding-top: 3px;
 }
@@ -214,4 +231,13 @@ body {
 .subscribe-social {
     font-family: 'Play', sans-serif;
     font-size: 16px;
+}
+.main-head {
+    font-family: 'Play', sans-serif;
+    color: #4d4d4d;
+}
+.list-town {
+    font-family: 'Play', sans-serif;
+    color: #4d4d4d;
+    font-size: 18px;
 }
