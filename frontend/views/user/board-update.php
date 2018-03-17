@@ -190,7 +190,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                         <li  id="thumb_<?=$images->id?>">
                             <div class="thumbnail img-upload  ">
                                 <div class="img-upload-over">
-                                    <?= Html::img($images->getUrl('200'), [ 'width'=>200, 'height' => 'auto' ])?>
+                                    <?= Html::img($model::fixPathImage($images->getUrl('200')), [ 'width'=>200, 'height' => 'auto' ])?>
                                 </div>
                                 <div class="caption">
 

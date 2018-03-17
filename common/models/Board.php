@@ -88,6 +88,33 @@ class Board extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    /**
+     * Правильный показ изображений. Фикс бага у costa-rico
+     * @param $size
+     * @return string
+     */
+    public function showImage($size)
+    {
+        $image = $this->getImage();
+        if ($this->getImages()[0]->urlAlias != 'placeHolder')
+        {
+
+            $url = $image->getUrl($size);
+            $path = substr($url, strpos($url,'image-by-item-and-alias' ));
+            return '/yii2images/images/'.$path;
+        }
+
+        return '/images/placeholder.png';
+
+    }
+
+    public static function fixPathImage($image)
+    {
+        $path = substr($image, strpos($image,'image-by-item-and-alias' ));
+        return '/yii2images/images/'.$path;
+    }
+
+
 
     /**
      * @inheritdoc

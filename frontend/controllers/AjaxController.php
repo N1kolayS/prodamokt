@@ -219,7 +219,7 @@ class AjaxController extends Controller {
                 $path = Yii::getAlias('@frontend/web/uploadimg/').$name_file;
                 if ($this->resizeImage($_FILES[0]['tmp_name'], $path)) {
                     $lastImage =  $model->attachImage($path, false, $model->id.'-'. $name_file);
-                    $image = ['id' => $lastImage->id, 'url' => $lastImage->getUrl('150x150')];
+                    $image = ['id' => $lastImage->id, 'url' => Board::fixPathImage($lastImage->getUrl('150x150'))];
                     $result = true;
                     unlink($path);
                 }
@@ -256,6 +256,7 @@ class AjaxController extends Controller {
 
             }
 
+            //echo Json::encode(['success' => $result, 'path' => Yii::getAlias('@webroot')]);
             echo Json::encode(['success' => $result, 'path' => str_replace(Yii::getAlias('@webroot'), '', $original_path)]);
         }
     }

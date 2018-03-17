@@ -21,7 +21,11 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title>Бесплатные Объявления. Продать, купить, авто, недвижимость, работа, товары - <?= Html::encode($this->title) ?></title>
+    <title>BoxOk -   <?= Html::encode($this->title) ?></title>
+
+    <meta property="og:title" content="BoxOk - <?= Html::encode($this->title) ?>" />
+
+
     <?php $this->head() ?>
     <link href="https://fonts.googleapis.com/css?family=Play" rel="stylesheet">
     <?php

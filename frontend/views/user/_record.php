@@ -17,14 +17,7 @@ use yii\bootstrap\Html;
 <a href="<?=Url::toRoute(['user/board-view', 'id' => $model->id])?>" class="list-group-item  <?=$model->isActive() ? : 'list-group-item-danger'?>">
     <div class="media">
         <div class="col-md-2">
-            <?php
-            $image = $model->getImage();
-            if($image) {
-                echo Html::img($image->getUrl('100x100'));
-            }
-
-
-            ?>
+            <?=Html::img($model->showImage('100x100'), ['height'=>'100', 'width'=> '100'])?>
         </div>
         <div class="col-md-6">
             <div class="media-body">

@@ -108,6 +108,19 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+    public function displayPhone()
+    {
+        if ($this->phone)
+        {
+            // Clean string phone
+            $phone = preg_replace('~\D+~','',$this->phone);
+            $phone_code = substr($phone, 0, 3);
+            $phone_1 = substr($phone, 3, 3);
+            $phone_2 = substr($phone, 6 );
+            return '8 ('.$phone_code.') '.$phone_1.'-'.$phone_2;
+        }
+    }
+
     /**
      * @inheritdoc
      */

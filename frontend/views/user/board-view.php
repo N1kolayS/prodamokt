@@ -104,15 +104,7 @@ $this->registerJs($script, yii\web\View::POS_END);
 
     <div class="row">
         <div class="col-md-5">
-            <?php
-
-            if ($model->existImages())
-            {
-                $image = $model->getImage();
-                echo '<div id="MainImg">'.Html::img($image->getUrl('450x'), ['class' => 'img-responsive']).'</div>';
-
-            }
-            ?>
+            <div id="MainImg"><?=Html::img($model->showImage('450x'), ['class' => 'img-responsive'])?></div>
         </div>
         <div class="col-md-2">
             <div class="scroll-img-list">
@@ -122,8 +114,8 @@ $this->registerJs($script, yii\web\View::POS_END);
                     echo '<ul class="list-group list-image">';
                     foreach ($model->getImages() as $img)
                     {
-                        $big_img = $img->getUrl('450x');
-                        echo '<li class="list-group-item text-center">'.Html::img($img->getUrl('100x100'), [
+                        $big_img = $model::fixPathImage($img->getUrl('450x'));
+                        echo '<li class="list-group-item text-center">'.Html::img($model::fixPathImage($img->getUrl('100x100')), [
                                 'class' => 'img-rounded',
                                 'onclick' => "loadimg('$big_img')"
                             ]).'</li>';

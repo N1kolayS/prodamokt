@@ -7,13 +7,12 @@ use common\models\Type;
 /* @var $this yii\web\View */
 
 
-$script = <<< JS
-
-
-
-JS;
-//$this->registerJs($script, yii\web\View::POS_END);
+$this->title = 'Бесплатные Объявления. Продать, купить, авто, недвижимость, работа, товары';
+$this->registerMetaTag(['og:image' => Url::to(['images/vk-ot.png'], true)]);
+$this->registerMetaTag(['vk:image' => Url::to(['images/vk-ot.png'], true)]);
 ?>
+
+
 <div class="site-index">
     <h2 class="text-center main-head"> BoxOK - Сайт бесплатных объявлений </h2>
     <p class="text-center list-town ">

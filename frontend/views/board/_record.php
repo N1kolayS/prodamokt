@@ -17,13 +17,7 @@ use yii\bootstrap\Html;
 <a href="<?=Url::toRoute(['board/view', 'id' => $model->id.'_'.$model->slug])?>" class="list-group-item  marked_<?=$model->marked?>">
     <div class="media">
         <p class="pull-left">
-            <?php
-            $image = $model->getImage();
-            if($image) {
-                echo Html::img($image->getUrl('100x100'), ['class'=>'img-responsive']);
-            }
-
-            ?>
+            <?=Html::img($model->showImage('100x100'), ['height'=>'100', 'width'=> '100'])?>
         </p>
         <div class="media-body">
             <h4 class="list-group-item-heading"><?=$model->name?> <small><?=$model->type->name?></small> </h4>

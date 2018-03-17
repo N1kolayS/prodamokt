@@ -7,11 +7,18 @@
  */
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Board */
 
 $this->title = $model->name;
+
+
+$this->registerMetaTag(['og:image' =>Url::toRoute('/', true).$model->showImage('450x')]);
+$this->registerMetaTag(['vk:image' =>Url::toRoute('/', true).$model->showImage('450x')]);
+
+
 
 
 $this->params['breadcrumbs'][] = ['label' => $model->type->name, 'url' => [
@@ -39,15 +46,9 @@ $this->registerJs($script, yii\web\View::POS_END);
 
     <div class="row">
         <div class="col-md-5">
-            <?php
+            <div id="MainImg"><?=Html::img($model->showImage('450x'), ['class' => 'img-responsive'])?></div>
 
-            if ($model->existImages())
-            {
-                $image = $model->getImage();
-                echo '<div id="MainImg">'.Html::img($image->getUrl('450x'), ['class' => 'img-responsive']).'</div>';
 
-            }
-            ?>
         </div>
         <div class="col-md-2">
             <div class="scroll-img-list">
@@ -57,8 +58,8 @@ $this->registerJs($script, yii\web\View::POS_END);
                     echo '<ul class="list-group list-image">';
                     foreach ($model->getImages() as $img)
                     {
-                        $big_img = $img->getUrl('450x');
-                        echo '<li class="list-group-item text-center">'.Html::img($img->getUrl('100x100'), [
+                        $big_img = $model::fixPathImage($img->getUrl('450x'));
+                        echo '<li class="list-group-item text-center">'.Html::img($model::fixPathImage($img->getUrl('100x100')), [
                                 'class' => 'img-rounded',
                                 'onclick' => "loadimg('$big_img')"
                             ]).'</li>';
@@ -81,7 +82,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                     echo '<p class="lead">' . $model->price['name'] . ': <span class="label label-success">' . $model->price['cost'] . '</span></p>';
                 } ?>
                 <p class="lead"> Продавец: <strong><?= $model->user->username ?></strong></p>
-                <p class="lead"> Контакты: <span id="showPhone"> 8 <?= $model->user->phone ?></span></p>
+                <p class="lead"> Контакты: <span id="showPhone">  <?= $model->user->displayPhone() ?></span></p>
                 <p class="lead"><span class="glyphicon glyphicon-map-marker"></span> <?= $model->town->name ?>  </p>
 
                 <hr/>

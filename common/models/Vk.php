@@ -17,7 +17,7 @@
 namespace common\models;
 use Yii;
 
-class Vk extends \yii\base\Object
+class Vk extends \yii\base\BaseObject
 {
 
     const VERSION = '5.5';
@@ -303,8 +303,11 @@ class Vk extends \yii\base\Object
         if (count($query) > 0) {
             $q .= '&'; // Add "&" sign for access_token if query exists
         }
-        $url = 'https://api.vk.com/method/' . $method . '?' . $q . 'access_token=' . $this->accessToken->access_token;
+        $url = 'https://api.vk.com/method/' . $method . '?' . $q . 'access_token=' . $this->accessToken->access_token.'&v='.self::VERSION;
+
         $result = json_decode($this->curl($url));
+
+
 
         if (isset($result->response)) {
 
@@ -366,22 +369,15 @@ class Vk extends \yii\base\Object
 
             'group_id' => $publicID,
         ]);
-        /*
-         * public 'upload_url' => string 'http://cs618028.vk.com/upload.php?act=do_add&mid=76989657&aid=-14&gid=70941690&hash=0c9cdfa73779ea6c904c4b5326368700&rhash=ba9b60e61e258bf8fd61536e6683e3af&swfupload=1&api=1&wallphoto=1' (length=185)
-              public 'aid' => int -14
-              public 'mid' => int 76989657
-         *
-         *  */
+
+
 
         $uploadURL = $response->upload_url;
+
         $output = [];
         exec("curl -X POST -F 'photo=@$fullServerPathToImage' '$uploadURL'", $output);
         $response = json_decode($output[0]);
-        /*
-         *  public 'server' => int 618028
-              public 'photo' => string '[{"photo":"96df595e0b:z","sizes":[["s","618028657","c5b1","RfjznPPyhxs",75,54],["m","618028657","c5b2","dQRTijvf4tE",130,93],["x","618028657","c5b3","-zUzUi-uOkU",604,432],["y","618028657","c5b4","FAAY0vnMSWc",807,577],["z","618028657","c5b5","OBZqwGjlO9s",900,644],["o","618028657","c5b6","Ku7Q6IqN5uc",130,93],["p","618028657","c5b7","0eFhSRrjxvU",200,143],["q","618028657","c5b8","F8E6QJg51o4",320,229],["r","618028657","c5b9","-a3oiI8SVOg",510,365]],"kid":"6bba9104fa05dd017597abce3ebeb215"}]' (length=496)
-              public 'hash' => string 'd02d83e70eca1c0d756d1a5d51c2fbfb' (length=32)
-         */
+
 
 
         $response = $this->api('photos.saveWallPhoto', [
@@ -390,26 +386,7 @@ class Vk extends \yii\base\Object
             'server' => $response->server,
             'hash' => $response->hash,
         ]);
-        /*
- *
- * array (size=1)
-0 =>
-object(stdClass)[93]
-public 'pid' => int 333363577
-public 'id' => string 'photo76989657_333363577' (length=23)
-public 'aid' => int -14
-public 'owner_id' => int 76989657
-public 'src' => string 'http://cs618028.vk.me/v618028657/c5c4/CJkUGsTNMNc.jpg' (length=53)
-public 'src_big' => string 'http://cs618028.vk.me/v618028657/c5c5/6G5kG2qrd0A.jpg' (length=53)
-public 'src_small' => string 'http://cs618028.vk.me/v618028657/c5c3/NjaefgAEqFA.jpg' (length=53)
-public 'src_xbig' => string 'http://cs618028.vk.me/v618028657/c5c6/dyX4tBB3yaI.jpg' (length=53)
-public 'src_xxbig' => string 'http://cs618028.vk.me/v618028657/c5c7/r8xGBKsau9c.jpg' (length=53)
-public 'width' => int 900
-public 'height' => int 644
-public 'text' => string '' (length=0)
-public 'created' => int 1402950212
- *
- */
+
 
         if ($tags) {
             $text .= "\n\n";
