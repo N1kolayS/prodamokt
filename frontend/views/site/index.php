@@ -8,8 +8,9 @@ use common\models\Type;
 
 
 $this->title = 'Бесплатные Объявления. Продать, купить, авто, недвижимость, работа, товары';
-$this->registerMetaTag(['og:image' => Url::to(['images/vk-ot.png'], true)]);
-$this->registerMetaTag(['vk:image' => Url::to(['images/vk-ot.png'], true)]);
+$this->registerMetaTag(['property' => 'og:image' , 'content' =>Url::to(['images/vk-ot.png'], true)]);
+$this->registerMetaTag(['property' => 'vk:image' , 'content' =>Url::to(['images/vk-ot.png'], true)]);
+
 ?>
 
 

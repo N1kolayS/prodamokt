@@ -15,8 +15,8 @@ use yii\helpers\Url;
 $this->title = $model->name;
 
 
-$this->registerMetaTag(['og:image' =>Url::toRoute('/', true).$model->showImage('450x')]);
-$this->registerMetaTag(['vk:image' =>Url::toRoute('/', true).$model->showImage('450x')]);
+$this->registerMetaTag(['property' => 'og:image' , 'content' =>Url::toRoute('/', true).$model->showImage('450x')]);
+$this->registerMetaTag(['property' => 'vk:image' , 'content' =>Url::toRoute('/', true).$model->showImage('450x')]);
 
 
 
@@ -82,7 +82,7 @@ $this->registerJs($script, yii\web\View::POS_END);
                     echo '<p class="lead">' . $model->price['name'] . ': <span class="label label-success">' . $model->price['cost'] . '</span></p>';
                 } ?>
                 <p class="lead"> Продавец: <strong><?= $model->user->username ?></strong></p>
-                <p class="lead"> Контакты: <span id="showPhone">  <?= $model->user->displayPhone() ?></span></p>
+                <p class="lead"> Контакты: <span id="showPhone"> <a href="tel: <?= $model->user->displayPhone() ?>"><?= $model->user->displayPhone() ?></a>  </span></p>
                 <p class="lead"><span class="glyphicon glyphicon-map-marker"></span> <?= $model->town->name ?>  </p>
 
                 <hr/>
