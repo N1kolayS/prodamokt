@@ -103,23 +103,21 @@ class BoardController extends Controller
 
     /**
      * Displays second step for create Ad
-     * @param integer $id
-     * @return mixed
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
      */
     public function actionCreate($id)
     {
         $type_id =  intval($id);
-
-
         $model_type = $this->findModelType($type_id);
 
         $model = new Board();
         $model->type_id = $type_id;
 
         $property_list = Property::find()->where(['type_id'=> $type_id])->orderBy('number')->all();
+
         if ($model->load(Yii::$app->request->post())&& $model->save() ) {
-
-
             $model->images = UploadedFile::getInstances($model, 'images');
             $scan_dir = Board::scanDirImages();
             if ($scan_dir)

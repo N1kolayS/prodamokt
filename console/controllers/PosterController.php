@@ -21,10 +21,9 @@ class PosterController extends Controller {
 
     public function actionAll()
     {
-        $boards = Board::find()->where(['post_vk'=>null])->orderBy('started_at')->all();
-        if ($boards)
-        {
-            foreach ($boards as $board)
+
+
+            foreach ($this->findBoards() as $board)
             {
                 if ($board->isActive())
                 {
@@ -32,6 +31,8 @@ class PosterController extends Controller {
                     if ($board->existImages())
                     {
                         $image = $board->getImage()->getPath();
+                        $path = substr($image, strpos($image,'image-by-item-and-alias' ));
+                        return '/yii2images/images/'.$path;
                     }
                     else
                     {
@@ -50,13 +51,21 @@ class PosterController extends Controller {
                 }
 
             }
-        }
+
 
     }
 
     protected function cleanTag($tag)
     {
         return str_replace([',', '.', '!', '/', '`', '<', '>', '?', '-', '+', '='], '', $tag);
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]|Board[]
+     */
+    private function findBoards()
+    {
+        return  Board::find()->where(['post_vk'=>null])->orderBy('started_at')->all();
     }
 
 

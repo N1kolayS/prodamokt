@@ -254,21 +254,11 @@ class Board extends \yii\db\ActiveRecord
 
     /**
      * @return bool
+     * @throws \yii\base\ErrorException
      */
     public static function deleteTmpDir()
     {
         FileHelper::removeDirectory(Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/');
-        /*
-        $tmp_user_dir = Yii::getAlias('@frontend/web/uploadimg/').Yii::$app->user->id.'-tmp/';
-        if (is_dir($tmp_user_dir))
-        {
-            $files = array_diff(scandir($tmp_user_dir), array('.','..'));
-            foreach ($files as $file) {
-                unlink("$tmp_user_dir/$file");
-            }
-            rmdir($tmp_user_dir);
-        }
-        */
         return true;
     }
 

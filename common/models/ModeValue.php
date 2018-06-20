@@ -9,19 +9,21 @@
 namespace common\models;
 use Yii;
 
-class ModeValue extends \yii\base\Object
+class ModeValue extends \yii\base\BaseObject
 {
     private $id;
     private $name;
     private $value;
     private $number;
 
-    public function __construct($id, $name, $value, $number)
+    public function __construct($id, $name, $value, $number, array $config =[])
     {
         $this->id = $id;
         $this->name = $name;
         $this->value = $value;
         $this->number = $number;
+
+        parent::__construct($config);
     }
 
     /**

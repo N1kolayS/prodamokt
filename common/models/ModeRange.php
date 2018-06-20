@@ -10,19 +10,21 @@ namespace common\models;
 use Yii;
 use yii\helpers\Json;
 
-class ModeRange extends \yii\base\Object
+class ModeRange extends \yii\base\BaseObject
 {
     private $id;
     private $name;
     private $value;
     private $number;
 
-    public function __construct($id, $name, $value, $number)
+    public function __construct($id, $name, $value, $number, array $config =[])
     {
         $this->id = $id;
         $this->name = $name;
         $this->value = $value;
         $this->number = $number;
+
+        parent::__construct($config);
     }
 
     public function Create()
