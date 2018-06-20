@@ -29,7 +29,7 @@ class DummyController extends Controller {
 
     public function actionVk()
     {
-        $url = 'https://api.vk.com/method/photos.getWallUploadServer?group_id=150356587&access_token=fc61311fb6d83c6b67a5ae21efe7116cf261573a0d646feb0e8d4506e8fb4f4bf83eedd8f1dd54e89e714&v=3';
+        $url = 'https://api.vk.com/method/photos.getWallUploadServer?group_id=150356587&access_token=&v=3';
         echo $url.PHP_EOL;
         $result = json_decode($this->curl($url));
 

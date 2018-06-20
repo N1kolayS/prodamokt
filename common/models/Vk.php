@@ -363,8 +363,6 @@ class Vk extends \yii\base\BaseObject
      */
     public function postToPublic($publicID, $text, $fullServerPathToImage, $tags = array())
     {
-
-
         $response = $this->api('photos.getWallUploadServer', [
 
             'group_id' => $publicID,
@@ -377,8 +375,6 @@ class Vk extends \yii\base\BaseObject
         $output = [];
         exec("curl -X POST -F 'photo=@$fullServerPathToImage' '$uploadURL'", $output);
         $response = json_decode($output[0]);
-
-
 
         $response = $this->api('photos.saveWallPhoto', [
             'group_id' => $publicID,
@@ -401,15 +397,12 @@ class Vk extends \yii\base\BaseObject
                 'owner_id' => -$publicID,
                 'from_group' => 1,
                 'message' => "$text",
-                'attachments' => "{$response[0]->id}", // uploaded image is passed as attachment
+                'attachments' => "photo{$response[0]->owner_id}_{$response[0]->id}", // uploaded image is passed as attachment
 
 
             ]);
 
-
         return isset($response->post_id);
-
-
     }
 
 }
